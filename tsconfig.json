@@ -15,12 +15,17 @@
     "moduleDetection": "force",
     "allowJs": true,
     "jsx": "react-jsx",
+    "forceConsistentCasingInFileNames": true,
     "paths": {
       "@/*": [
+        "./src/*",
         "./*"
       ]
     },
     "allowImportingTsExtensions": true,
     "noEmit": true
-  }
+  },
+  "include": [
+    "src/**/*"
+  ]
 }
