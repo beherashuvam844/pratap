@@ -1242,7 +1242,7 @@ export default function App() {
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <a 
                       href="mailto:pratap@iiserkol.ac.in"
-                      className="flex items-center gap-3 bg-slate-950 border border-slate-800 p-3 rounded-xl hover:border-indigo-500/50 transition group"
+                      className="flex items-center gap-3 bg-slate-950 border border-slate-800 p-3 rounded-xl hover:border-indigo-500/50 transition card-lift-sm group"
                     >
                       <div className="h-9 w-9 bg-indigo-500/10 text-indigo-400 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-indigo-500 group-hover:text-white transition">
                         <Mail className="h-5 w-5" />
@@ -1257,7 +1257,7 @@ export default function App() {
                       href="https://www.instagram.com/athletics.iiserk"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-3 bg-slate-950 border border-slate-800 p-3 rounded-xl hover:border-rose-500/50 transition group"
+                      className="flex items-center gap-3 bg-slate-950 border border-slate-800 p-3 rounded-xl hover:border-rose-500/50 transition card-lift-sm group"
                     >
                       <div className="h-9 w-9 bg-rose-500/10 text-rose-400 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-rose-500 group-hover:text-white transition">
                         <Instagram className="h-5 w-5" />
@@ -1272,7 +1272,7 @@ export default function App() {
                       href="https://youtube.com/@pratapathleticsmeet?si=LVAXim9Ed4WBbpfM"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-3 bg-slate-950 border border-slate-800 p-3 rounded-xl hover:border-red-500/50 transition group"
+                      className="flex items-center gap-3 bg-slate-950 border border-slate-800 p-3 rounded-xl hover:border-red-500/50 transition card-lift-sm group"
                     >
                       <div className="h-9 w-9 bg-red-500/10 text-red-500 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-red-600 group-hover:text-white transition">
                         <Youtube className="h-5 w-5" />
@@ -1297,7 +1297,7 @@ export default function App() {
             {/* Quick stats grid (Kept for visual value) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               
-              <div className="bg-gradient-to-br from-amber-950 to-amber-900/50 p-6 rounded-2xl border border-amber-500/20 flex items-center gap-4">
+              <div className="bg-gradient-to-br from-amber-950 to-amber-900/50 p-6 rounded-2xl border border-amber-500/20 flex items-center gap-4 card-lift-sm animate-fade-slide-up stagger-1">
                 <div className="h-12 w-12 bg-amber-500 text-white rounded-xl flex items-center justify-center font-bold text-lg shadow-lg shadow-amber-900/40">
                   {competitions.length}
                 </div>
@@ -1307,7 +1307,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-emerald-950 to-emerald-900/50 p-6 rounded-2xl border border-emerald-500/20 flex items-center gap-4">
+              <div className="bg-gradient-to-br from-emerald-950 to-emerald-900/50 p-6 rounded-2xl border border-emerald-500/20 flex items-center gap-4 card-lift-sm animate-fade-slide-up stagger-2">
                 <div className="h-12 w-12 bg-emerald-500 text-white rounded-xl flex items-center justify-center font-bold text-lg shadow-lg shadow-emerald-900/40">
                   {metrics.length}
                 </div>
@@ -1384,8 +1384,8 @@ export default function App() {
                       No Pratap competitions scheduled at present.
                     </div>
                   ) : (
-                    competitions.filter(c => c.tier === 'Pratap').map(c => (
-                      <div key={c.id} className="bg-slate-900 rounded-2xl border border-slate-800 p-6 shadow-xs relative hover:border-slate-700 transition">
+                    competitions.filter(c => c.tier === 'Pratap').map((c, idx) => (
+                      <div key={c.id} className={`bg-slate-900 rounded-2xl border border-slate-800 p-6 shadow-xs relative card-lift animate-fade-slide-up stagger-${(idx % 5) + 1}`}>
                         <div className="absolute top-6 right-6">
                           <span className={`text-[10px] font-extrabold px-2.5 py-1 rounded-full ${
                             c.status === 'Completed' 
