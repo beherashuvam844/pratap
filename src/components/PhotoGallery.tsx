@@ -365,11 +365,11 @@ export default function PhotoGallery({
               </div>
             )}
             
-            {filteredTrialMetrics.map((m) => (
+            {filteredTrialMetrics.map((m, idx) => (
               <div
                 key={m.id}
                 onClick={() => handleOpenTrialLightbox(m)}
-                className="group bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-2xs hover:shadow-md hover:border-slate-700 transition-all cursor-pointer flex flex-col justify-between"
+                className={`group bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-2xs card-lift cursor-pointer flex flex-col justify-between animate-fade-slide-up stagger-${(idx % 5) + 1}`}
               >
                 <div>
                   {/* Photo Frame aspect */}
