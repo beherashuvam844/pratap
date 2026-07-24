@@ -1,51 +1,78 @@
 /**
- * Resizes and compresses an image data URL to ensure it stays within Firestore document limits (1MB).
+ * Resizes and compresses an image data URL to ensure it stays within Firestore document limits (1MB) and localStorage quotas.
  */
-export async function compressImage(dataUrl: string, maxWidth = 800, maxHeight = 800, quality = 0.7): Promise<string> {
-  return new Promise((resolve, reject) => {
+export async function compressImage(dataUrl: string, maxWidth = 800, maxHeight = 800, quality = 0.65): Promise<string> {
+  if (!dataUrl || !dataUrl.startsWith('data:image')) {
+    return dataUrl;
+  }
+  
+  // If string is already very small (< 15KB), return as is
+  if (dataUrl.length < 15000) {
+    return dataUrl;
+  }
+
+  return new Promise((resolve) => {
     const img = new Image();
     img.onload = () => {
-      // Calculate new dimensions
       let width = img.width;
       let height = img.height;
 
       if (width > height) {
         if (width > maxWidth) {
-          height *= maxWidth / width;
+          height = Math.round((height * maxWidth) / width);
           width = maxWidth;
         }
       } else {
         if (height > maxHeight) {
-          width *= maxHeight / height;
+          width = Math.round((width * maxHeight) / height);
           height = maxHeight;
         }
       }
 
-      // Create canvas and draw resized image
+      width = Math.max(1, width);
+      height = Math.max(1, height);
+
       const canvas = document.createElement('canvas');
       canvas.width = width;
       canvas.height = height;
       const ctx = canvas.getContext('2d');
       if (!ctx) {
-        reject(new Error('Could not get canvas context'));
+        resolve(dataUrl);
         return;
       }
 
       ctx.drawImage(img, 0, 0, width, height);
       
-      // Export as compressed JPEG
-      const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
-      resolve(compressedDataUrl);
+      try {
+        const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+        if (compressedDataUrl && compressedDataUrl.length < dataUrl.length) {
+          resolve(compressedDataUrl);
+        } else {
+          resolve(dataUrl);
+        }
+      } catch (e) {
+        console.warn('Image compression canvas export error:', e);
+        resolve(dataUrl);
+      }
     };
-    img.onerror = (err) => reject(err);
+
+    img.onerror = (err) => {
+      console.warn('Image compression load error:', err);
+      resolve(dataUrl);
+    };
+
     img.src = dataUrl;
   });
 }
 
 /**
- * Creates a cropped image from a source image and crop coordinates.
+ * Creates a cropped image from a source image and crop coordinates, returning a compressed JPEG data URL.
  */
-export async function getCroppedImg(imageSrc: string, pixelCrop: { x: number; y: number; width: number; height: number }): Promise<string> {
+export async function getCroppedImg(
+  imageSrc: string, 
+  pixelCrop: { x: number; y: number; width: number; height: number },
+  maxDim = 800
+): Promise<string> {
   const image = new Image();
   image.src = imageSrc;
   await new Promise((resolve) => (image.onload = resolve));
@@ -53,13 +80,26 @@ export async function getCroppedImg(imageSrc: string, pixelCrop: { x: number; y:
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
 
-  if (!ctx) return '';
+  if (!ctx || !pixelCrop) return '';
 
-  // Set canvas size to the desired crop size
-  canvas.width = pixelCrop.width;
-  canvas.height = pixelCrop.height;
+  // Calculate scaled target dimensions
+  let targetW = pixelCrop.width;
+  let targetH = pixelCrop.height;
 
-  // Draw the cropped portion of the image onto the canvas
+  if (targetW > maxDim || targetH > maxDim) {
+    if (targetW > targetH) {
+      targetH = Math.round((targetH * maxDim) / targetW);
+      targetW = maxDim;
+    } else {
+      targetW = Math.round((targetW * maxDim) / targetH);
+      targetH = maxDim;
+    }
+  }
+
+  canvas.width = Math.max(1, targetW);
+  canvas.height = Math.max(1, targetH);
+
+  // Draw cropped and scaled portion onto the canvas
   ctx.drawImage(
     image,
     pixelCrop.x,
@@ -68,10 +108,9 @@ export async function getCroppedImg(imageSrc: string, pixelCrop: { x: number; y:
     pixelCrop.height,
     0,
     0,
-    pixelCrop.width,
-    pixelCrop.height
+    canvas.width,
+    canvas.height
   );
 
-  // Return as base64 string
-  return canvas.toDataURL('image/jpeg', 0.8);
+  return canvas.toDataURL('image/jpeg', 0.65);
 }
