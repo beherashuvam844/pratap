@@ -14,19 +14,19 @@ export default function ClubLogo({
   logoUrl = null
 }: ClubLogoProps) {
   return (
-    <div className="flex flex-col items-center select-none" id="club-logo-wrapper">
+    <div className="flex flex-col items-center select-none logo-lift cursor-pointer" id="club-logo-wrapper">
       {logoUrl ? (
         <img 
           src={logoUrl} 
           alt="Club Logo" 
-          className={`${className} object-contain transition-transform duration-300 hover:scale-[1.03]`}
+          className={`${className} object-contain`}
           referrerPolicy="no-referrer"
         />
       ) : (
         <svg 
           id="iiserk-athletics-logo-svg"
           viewBox="0 0 500 500" 
-          className={`${className} transition-transform duration-300 hover:scale-[1.03]`}
+          className={`${className}`}
           fill="none" 
           xmlns="http://www.w3.org/2000/svg"
         >
