@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Header, { TabType } from './components/Header';
 import DashboardView from './components/DashboardView';
 import CompetitionScheduler from './components/CompetitionScheduler';
@@ -547,44 +547,7 @@ export default function App() {
     }
   };
 
-  const healedIdsRef = useRef<Set<string>>(new Set());
 
-  // Auto-heal effect: Safely compress oversized photos in memory once per session without flooding Firestore write queue
-  useEffect(() => {
-    const unhealed = metrics.filter(m => m.photoUrl && m.photoUrl.length > 80000 && !healedIdsRef.current.has(m.id));
-    if (unhealed.length === 0) return;
-
-    // Immediately mark IDs so this effect will not re-trigger repeatedly
-    unhealed.forEach(m => healedIdsRef.current.add(m.id));
-
-    let isMounted = true;
-    const processMetrics = async () => {
-      let changed = false;
-      const updatedList = await Promise.all(
-        metrics.map(async (m) => {
-          if (m.photoUrl && m.photoUrl.length > 80000) {
-            changed = true;
-            try {
-              const compressed = await compressImage(m.photoUrl, 640, 640, 0.6);
-              return { ...m, photoUrl: compressed };
-            } catch (e) {
-              console.warn('Failed to compress oversized photoUrl:', e);
-              return { ...m, photoUrl: '' };
-            }
-          }
-          return m;
-        })
-      );
-
-      if (isMounted && changed) {
-        setMetrics(updatedList);
-        syncAndSave('metrics', updatedList);
-      }
-    };
-
-    processMetrics();
-    return () => { isMounted = false; };
-  }, [metrics]);
 
   // --- ATHLETES ACTION HANDLERS ---
   const handleAddAthlete = async (newAthlete: Athlete) => {
