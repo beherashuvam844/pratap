@@ -41,7 +41,7 @@ export default function Header({
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2.5 rounded-xl px-5 py-2.5 text-sm sm:text-base font-extrabold transition-all duration-200 ${
+              className={`flex items-center gap-2.5 rounded-xl px-5 py-2.5 text-sm sm:text-base font-extrabold transition-all duration-200 card-lift-sm cursor-pointer ${
                 activeTab === tab.id
                   ? 'bg-white text-slate-950 shadow-lg'
                   : 'text-slate-400 hover:text-white hover:bg-white/5'
@@ -57,7 +57,7 @@ export default function Header({
           <button
             id="nav-tab-admin"
             onClick={() => setActiveTab('admin')}
-            className={`flex items-center gap-2.5 rounded-xl px-5 py-2.5 text-sm sm:text-base font-extrabold transition-all duration-200 relative ${
+            className={`flex items-center gap-2.5 rounded-xl px-5 py-2.5 text-sm sm:text-base font-extrabold transition-all duration-200 card-lift-sm cursor-pointer relative ${
               activeTab === 'admin'
                 ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-900/40'
                 : 'text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/5'
