@@ -242,6 +242,7 @@ export default function AdminPanel({
   // --- ADMIN LISTS STATE ---
   const [newAdminEmail, setNewAdminEmail] = useState('');
   const [newAdminName, setNewAdminName] = useState('');
+  const [newAdminPassword, setNewAdminPassword] = useState('');
   
   const logoInputRef = useRef<HTMLInputElement>(null);
   const clubLogoInputRef = useRef<HTMLInputElement>(null);
@@ -467,14 +468,15 @@ export default function AdminPanel({
   const handleAdminSubmit = (e: React.FormEvent) => {
      e.preventDefault();
      const parsedEmail = newAdminEmail.trim().toLowerCase();
-     if (!parsedEmail || !parsedEmail.endsWith('@iiserkol.ac.in')) {
-       triggerNotification('Only G-Suite IISER Kolkata emails (@iiserkol.ac.in) are authorized.', 'warn');
+     if (!parsedEmail) {
+       triggerNotification('Please enter a valid Admin ID or email.', 'warn');
        return;
      }
 
      const newAdm: AdminUser = {
        email: parsedEmail,
        name: newAdminName.trim() || 'Co-Administrator',
+       password: newAdminPassword.trim() || undefined,
        addedDate: new Date().toISOString().split('T')[0]
      };
 
@@ -483,6 +485,7 @@ export default function AdminPanel({
 
      setNewAdminEmail('');
      setNewAdminName('');
+     setNewAdminPassword('');
    };
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -1745,12 +1748,24 @@ export default function AdminPanel({
                 <input
                   type="text"
                   required
-                  placeholder="e.g. sportscomm@iiserkol.ac.in or admin"
+                  placeholder="e.g. sportscomm@iiserkol.ac.in or admin2"
                   value={newAdminEmail}
                   onChange={(e) => setNewAdminEmail(e.target.value)}
                   className="w-full bg-slate-900 border border-slate-800 text-xs px-3 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 font-bold font-mono text-white shadow-sm"
                 />
                 <span className="text-[9px] text-slate-600 italic mt-1 block leading-tight">Admin email handle or user identifier for authorized access.</span>
+              </div>
+
+              <div className="space-y-1 text-left">
+                <label className="text-[10px] font-bold text-slate-500 uppercase">Create Admin Password (Optional)</label>
+                <input
+                  type="password"
+                  placeholder="Enter login password for new admin"
+                  value={newAdminPassword}
+                  onChange={(e) => setNewAdminPassword(e.target.value)}
+                  className="w-full bg-slate-900 border border-slate-800 text-xs px-3 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 font-bold font-mono text-white shadow-sm"
+                />
+                <span className="text-[9px] text-slate-600 italic mt-1 block leading-tight">Set a password for this admin to log in via Admin ID & Password.</span>
               </div>
 
               <button
@@ -1858,6 +1873,7 @@ export default function AdminPanel({
                   <tr className="bg-slate-900 border-b border-slate-800 text-[10px] uppercase font-bold text-slate-500">
                     <th className="p-3">Council Name</th>
                     <th className="p-3">Admin ID / Email</th>
+                    <th className="p-3">Password</th>
                     <th className="p-3">Authorized Date</th>
                     <th className="p-3 text-right">Privilege Actions</th>
                   </tr>
@@ -1869,6 +1885,15 @@ export default function AdminPanel({
                       <tr key={adm.email} className="hover:bg-slate-900/30">
                         <td className="p-3 font-bold text-slate-200">{adm.name}</td>
                         <td className="p-3 font-mono text-slate-500">{adm.email}</td>
+                        <td className="p-3 font-mono text-xs">
+                          {adm.password ? (
+                            <span className="text-[10px] text-amber-400 bg-amber-950/20 px-2.5 py-1 rounded-lg border border-amber-900/30 font-bold">
+                              {adm.password}
+                            </span>
+                          ) : (
+                            <span className="text-[10px] text-slate-600 italic">Not set</span>
+                          )}
+                        </td>
                         <td className="p-3 text-slate-600">{adm.addedDate}</td>
                         <td className="p-3 text-right">
                           {isSelfEvaluation ? (
