@@ -3,6 +3,7 @@ import { Athlete, PerformanceMetric, Competition } from '../types';
 import { normalizeEventName } from '../data/mockData';
 import { CardScrollWrapper } from './CardScrollWrapper';
 import { playCardSlideSound } from '../utils/soundEffects';
+import { compressImage } from '../utils/imageUtils';
 import { 
   Search, 
   Filter, 
@@ -90,20 +91,27 @@ export default function PhotoGallery({
   // Local drag-and-drop file states
   const [isDragging, setIsDragging] = useState(false);
 
-  // File reader converter for local storage compatibility
+  // File reader converter for local storage compatibility with compression
   const processFile = (file: File) => {
     if (!file.type.startsWith('image/')) {
       alert('File type not supported. Please select an image (PNG, JPG, JPEG).');
       return;
     }
-    if (file.size > 5 * 1024 * 1024) {
-      alert('The chosen image exceeds the 5MB limit. Please choose a smaller layout asset.');
+    if (file.size > 15 * 1024 * 1024) {
+      alert('The chosen image exceeds 15MB limit.');
       return;
     }
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = async (event) => {
       if (event.target?.result) {
-        setFormPhotoUrl(event.target.result as string);
+        const rawResult = event.target.result as string;
+        try {
+          const compressed = await compressImage(rawResult, 800, 800, 0.65);
+          setFormPhotoUrl(compressed);
+        } catch (e) {
+          console.warn('Compression error in PhotoGallery:', e);
+          setFormPhotoUrl(rawResult);
+        }
       }
     };
     reader.readAsDataURL(file);
@@ -147,12 +155,21 @@ export default function PhotoGallery({
     setIsFormModalOpen(true);
   };
 
-  const handleSaveMetric = (e: React.FormEvent) => {
+  const handleSaveMetric = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isAdmin) return;
     if (!formPhotoUrl.trim()) {
       alert('Please select or specify a photo URL address.');
       return;
+    }
+
+    let finalPhotoUrl = formPhotoUrl;
+    if (formPhotoUrl.startsWith('data:image')) {
+      try {
+        finalPhotoUrl = await compressImage(formPhotoUrl, 800, 800, 0.65);
+      } catch (err) {
+        console.warn('Compression failed in handleSaveMetric:', err);
+      }
     }
 
     const metricPayload: PerformanceMetric = {
@@ -167,7 +184,7 @@ export default function PhotoGallery({
       venue: formVenue || 'Athletics Ground IISER KOLKATA',
       year: formYear || new Date().getFullYear().toString(),
       rank: editingMetric ? editingMetric.rank : 1,
-      photoUrl: formPhotoUrl,
+      photoUrl: finalPhotoUrl,
       tags: ['gallery_photo']
     };
 
