@@ -16,10 +16,10 @@
     "allowJs": true,
     "jsx": "react-jsx",
     "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
     "paths": {
       "@/*": [
-        "./src/*",
-        "./*"
+        "./src/*"
       ]
     },
     "allowImportingTsExtensions": true,
