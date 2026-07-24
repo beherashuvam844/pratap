@@ -13,6 +13,7 @@ import ClubLogo from './components/ClubLogo';
 import { SoundToggle } from './components/SoundToggle';
 import { CardScrollWrapper } from './components/CardScrollWrapper';
 import { playCardSlideSound } from './utils/soundEffects';
+import { compressImage } from './utils/imageUtils';
 import { Athlete, PerformanceMetric, Competition, Announcement, AdminUser } from './types';
 import { 
   INITIAL_ATHLETES, 
@@ -527,8 +528,64 @@ export default function App() {
 
   // Sync state modifications to LocalStorage helper (maintained for offline fast renders)
   const syncAndSave = (key: 'athletes' | 'metrics' | 'competitions' | 'announcements' | 'admins', updatedData: any) => {
-    localStorage.setItem(`apex_${key}`, JSON.stringify(updatedData));
+    try {
+      localStorage.setItem(`apex_${key}`, JSON.stringify(updatedData));
+    } catch (e) {
+      console.warn(`localStorage quota exceeded for apex_${key}:`, e);
+      if (key === 'metrics' && Array.isArray(updatedData)) {
+        try {
+          // Strip large base64 strings to stay within quota
+          const stripped = updatedData.map((m: PerformanceMetric) => ({
+            ...m,
+            photoUrl: (m.photoUrl && m.photoUrl.length > 50000) ? '' : m.photoUrl
+          }));
+          localStorage.setItem(`apex_${key}`, JSON.stringify(stripped));
+        } catch (innerErr) {
+          console.error('Failed to save stripped metrics to localStorage:', innerErr);
+        }
+      }
+    }
   };
+
+  // Auto-heal effect: Detect and compress any oversized metrics (e.g. from prior uncompressed uploads)
+  useEffect(() => {
+    const oversized = metrics.filter(m => m.photoUrl && m.photoUrl.length > 100000);
+    if (oversized.length === 0) return;
+
+    let isMounted = true;
+    const healOversizedMetrics = async () => {
+      let changed = false;
+      const healedMetrics = await Promise.all(
+        metrics.map(async (m) => {
+          if (m.photoUrl && m.photoUrl.length > 100000) {
+            changed = true;
+            try {
+              const compressed = await compressImage(m.photoUrl, 800, 800, 0.65);
+              const result = { ...m, photoUrl: compressed };
+              try {
+                await setDoc(doc(db, 'metrics', m.id), sanitizeData(result));
+              } catch (e) {
+                console.warn('Failed to update healed metric in Firestore:', e);
+              }
+              return result;
+            } catch (e) {
+              console.warn('Failed to compress oversized photoUrl:', e);
+              return { ...m, photoUrl: '' };
+            }
+          }
+          return m;
+        })
+      );
+
+      if (isMounted && changed) {
+        setMetrics(healedMetrics);
+        syncAndSave('metrics', healedMetrics);
+      }
+    };
+
+    healOversizedMetrics();
+    return () => { isMounted = false; };
+  }, [metrics]);
 
   // --- ATHLETES ACTION HANDLERS ---
   const handleAddAthlete = async (newAthlete: Athlete) => {
@@ -699,25 +756,47 @@ export default function App() {
   };
 
   // --- PERFORMANCE METRIC ACTION HANDLERS ---
+  const sanitizeAndCompressMetric = async (m: PerformanceMetric): Promise<PerformanceMetric> => {
+    if (m.photoUrl && m.photoUrl.startsWith('data:image')) {
+      try {
+        const compressed = await compressImage(m.photoUrl, 800, 800, 0.65);
+        return { ...m, photoUrl: compressed };
+      } catch (e) {
+        console.warn('Failed to compress metric photo:', e);
+      }
+    }
+    return m;
+  };
+
   const handleAddMetric = async (newMetric: PerformanceMetric) => {
-    // Upsert logic: if metric with same ID context exists, update it, else append new
-    const exists = metrics.find(m => m.id === newMetric.id);
+    const processedMetric = await sanitizeAndCompressMetric(newMetric);
+    const exists = metrics.find(m => m.id === processedMetric.id);
     let updated: PerformanceMetric[];
     
     if (exists) {
-      updated = metrics.map(m => m.id === newMetric.id ? newMetric : m);
+      updated = metrics.map(m => m.id === processedMetric.id ? processedMetric : m);
     } else {
-      updated = [newMetric, ...metrics];
+      updated = [processedMetric, ...metrics];
     }
 
     setMetrics(updated);
     syncAndSave('metrics', updated);
 
     try {
-      await setDoc(doc(db, 'metrics', newMetric.id), sanitizeData(newMetric));
-      setSuccessMsg(exists ? `Performance record updated successfully.` : `Performance log submitted successfully for ${newMetric.athleteName}.`);
+      await setDoc(doc(db, 'metrics', processedMetric.id), sanitizeData(processedMetric));
+      setSuccessMsg(exists ? `Performance record updated successfully.` : `Performance log submitted successfully for ${processedMetric.athleteName}.`);
     } catch (error: any) {
       console.error("Firestore setDoc error for metric:", error);
+      // Fallback: If setDoc failed (e.g. document size limit exceeded), try stripping/compressing photoUrl to save the core metric data
+      if (processedMetric.photoUrl && processedMetric.photoUrl.length > 100000) {
+        try {
+          const fallbackMetric = { ...processedMetric, photoUrl: '' };
+          await setDoc(doc(db, 'metrics', processedMetric.id), sanitizeData(fallbackMetric));
+          console.log("Successfully saved fallback metric without oversized image.");
+        } catch (fallbackErr) {
+          console.error("Fallback setDoc also failed:", fallbackErr);
+        }
+      }
     }
   };
 
@@ -766,15 +845,25 @@ export default function App() {
   };
 
   const handleEditMetric = async (updatedMetric: PerformanceMetric) => {
-    const updated = metrics.map(m => m.id === updatedMetric.id ? updatedMetric : m);
+    const processedMetric = await sanitizeAndCompressMetric(updatedMetric);
+    const updated = metrics.map(m => m.id === processedMetric.id ? processedMetric : m);
     setMetrics(updated);
     syncAndSave('metrics', updated);
 
     try {
-      await setDoc(doc(db, 'metrics', updatedMetric.id), sanitizeData(updatedMetric));
+      await setDoc(doc(db, 'metrics', processedMetric.id), sanitizeData(processedMetric));
       setSuccessMsg('Performance log modified successfully.');
     } catch (error: any) {
       console.error("Firestore setDoc error for metric:", error);
+      if (processedMetric.photoUrl && processedMetric.photoUrl.length > 100000) {
+        try {
+          const fallbackMetric = { ...processedMetric, photoUrl: '' };
+          await setDoc(doc(db, 'metrics', processedMetric.id), sanitizeData(fallbackMetric));
+          console.log("Successfully saved fallback edited metric without oversized image.");
+        } catch (fallbackErr) {
+          console.error("Fallback edit setDoc also failed:", fallbackErr);
+        }
+      }
     }
   };
 
