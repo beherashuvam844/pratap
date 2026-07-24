@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Athlete, PerformanceMetric, Competition } from '../types';
 import ImageCropperModal from './ImageCropperModal';
 import { normalizeEventName } from '../data/mockData';
+import { CardScrollWrapper } from './CardScrollWrapper';
+import { playCardSlideSound } from '../utils/soundEffects';
 import { 
   Search, 
   Filter, 
@@ -454,7 +456,7 @@ export default function DashboardView({
 
                   {/* Profile Cards Container */}
                   <div className="p-4 sm:p-5 space-y-4 bg-slate-950/60">
-                    {group.metrics.map((met) => {
+                    {group.metrics.map((met, metIdx) => {
                       const displayRank = met.rank;
                       const athlete = poolOfAthletes.find(a => 
                         a.id === met.athleteId ||
@@ -470,10 +472,11 @@ export default function DashboardView({
                       const scoreStr = met.displayValue || formatValue(met.value, met.eventType);
 
                       return (
-                        <div 
-                          key={met.id}
-                          className="bg-slate-900/80 hover:bg-slate-900 border border-slate-800 hover:border-indigo-500/50 p-5 sm:p-6 rounded-2xl sm:rounded-3xl transition-all duration-300 card-lift-sm group relative overflow-hidden backdrop-blur-sm flex flex-col md:flex-row md:items-center justify-between gap-5"
-                        >
+                        <CardScrollWrapper key={met.id} index={metIdx}>
+                          <div 
+                            onMouseEnter={playCardSlideSound}
+                            className="bg-slate-900/80 hover:bg-slate-900 border border-slate-800 hover:border-indigo-500/50 p-5 sm:p-6 rounded-2xl sm:rounded-3xl transition-all duration-300 card-lift-sm group relative overflow-hidden backdrop-blur-sm flex flex-col md:flex-row md:items-center justify-between gap-5"
+                          >
                           {/* Background Glow Overlay */}
                           <div className="absolute -right-12 -bottom-12 w-48 h-48 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/20 transition-all duration-500 pointer-events-none" />
 
@@ -598,9 +601,10 @@ export default function DashboardView({
                           </div>
 
                         </div>
-                      );
-                    })}
-                  </div>
+                      </CardScrollWrapper>
+                    );
+                  })}
+                </div>
                 </div>
               ))}
             </div>
