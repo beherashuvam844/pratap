@@ -1,0 +1,129 @@
+{
+  "entities": {
+    "Admin": {
+      "title": "Admin",
+      "description": "An authorized administrator email registry",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "Email address of the administrator"
+        },
+        "role": {
+          "type": "string",
+          "description": "Administrative authority role label"
+        },
+        "addedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp indicating when role was provisioned"
+        }
+      },
+      "required": ["email", "role"]
+    },
+    "Athlete": {
+      "title": "Athlete",
+      "description": "An IISER-K collegiate athlete profile",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "gender": { "type": "string" },
+        "age": { "type": "integer" },
+        "club": { "type": "string" },
+        "avatarColor": { "type": "string" },
+        "photoUrl": { "type": "string" },
+        "events": { "type": "array" }
+      },
+      "required": ["id", "name", "category", "gender", "age", "club", "avatarColor"]
+    },
+    "PerformanceMetric": {
+      "title": "PerformanceMetric",
+      "description": "Performance trial metrics for an athlete",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "athleteId": { "type": "string" },
+        "athleteName": { "type": "string" },
+        "eventType": { "type": "string" },
+        "value": { "type": "number" },
+        "unit": { "type": "string" },
+        "date": { "type": "string" },
+        "location": { "type": "string" },
+        "notes": { "type": "string" },
+        "photoUrl": { "type": "string" }
+      },
+      "required": ["id", "athleteId", "athleteName", "eventType", "value", "unit", "date"]
+    },
+    "Competition": {
+      "title": "Competition",
+      "description": "Sports meets or relay trials specifications",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "date": { "type": "string" },
+        "time": { "type": "string" },
+        "venue": { "type": "string" },
+        "description": { "type": "string" },
+        "events": { "type": "array" },
+        "status": { "type": "string" },
+        "registeredAthleteIds": { "type": "array" },
+        "tier": { "type": "string" }
+      },
+      "required": ["id", "title", "date", "venue", "status", "events"]
+    },
+    "Announcement": {
+      "title": "Announcement",
+      "description": "Important notice circulars",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "date": { "type": "string" },
+        "content": { "type": "string" },
+        "importance": { "type": "string" },
+        "category": { "type": "string" },
+        "attachmentName": { "type": "string" },
+        "attachmentUrl": { "type": "string" }
+      },
+      "required": ["id", "title", "date", "content", "importance", "category"]
+    },
+    "AppSettings": {
+      "title": "AppSettings",
+      "description": "Application branding and appearance configurations",
+      "type": "object",
+      "properties": {
+        "appLogo": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "firestore": {
+    "/admins/{adminId}": {
+      "schema": "Admin",
+      "description": "Listing of G-Suite accounts authorized for the console"
+    },
+    "/athletes/{athleteId}": {
+      "schema": "Athlete",
+      "description": "Athletic profiles catalog for IISER-K"
+    },
+    "/metrics/{metricId}": {
+      "schema": "PerformanceMetric",
+      "description": "Chronological trial/best records tracking list"
+    },
+    "/competitions/{competitionId}": {
+      "schema": "Competition",
+      "description": "Competitions and local meets registry"
+    },
+    "/announcements/{announcementId}": {
+      "schema": "Announcement",
+      "description": "Circular boards and event notice listings"
+    },
+    "/settings/{settingId}": {
+      "schema": "AppSettings",
+      "description": "Global application configuration documents"
+    }
+  }
+}
