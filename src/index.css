@@ -27,29 +27,50 @@
 .stagger-4 { animation-delay: 0.2s; }
 .stagger-5 { animation-delay: 0.25s; }
 
-/* Card lifting effect with soft elevation shadow */
+/* Dynamic Card Deck Splitting & Collision Scroll Effects */
+.card-deck-split-odd {
+  animation: cardSplitLeft 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.card-deck-split-even {
+  animation: cardSplitRight 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.card-collide-snap {
+  animation: cardCollideSnap 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
+}
+
+/* Card lifting effect with soft elevation shadow & active collision response */
 .card-lift {
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+  will-change: transform;
 }
 .card-lift:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 30px -10px rgba(99, 102, 241, 0.15), 0 10px 15px -5px rgba(0, 0, 0, 0.5);
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 24px 38px -12px rgba(99, 102, 241, 0.2), 0 12px 20px -6px rgba(0, 0, 0, 0.6);
+}
+.card-lift:active {
+  transform: translateY(-2px) scale(0.98);
 }
 
 .card-lift-sm {
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+  will-change: transform;
 }
 .card-lift-sm:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 20px -8px rgba(99, 102, 241, 0.12), 0 6px 10px -4px rgba(0, 0, 0, 0.4);
+  transform: translateY(-4px) scale(1.005);
+  box-shadow: 0 16px 24px -10px rgba(99, 102, 241, 0.16), 0 8px 12px -5px rgba(0, 0, 0, 0.5);
+}
+.card-lift-sm:active {
+  transform: translateY(-1px) scale(0.99);
 }
 
 .logo-lift {
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
 }
 .logo-lift:hover {
-  transform: translateY(-4px) scale(1.04);
-  filter: drop-shadow(0 8px 16px rgba(245, 158, 11, 0.25));
+  transform: translateY(-5px) scale(1.05);
+  filter: drop-shadow(0 10px 20px rgba(245, 158, 11, 0.3));
 }
 
 @keyframes fadeIn {
@@ -71,11 +92,59 @@
 @keyframes fadeSlideUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(24px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes cardSplitLeft {
+  0% {
+    opacity: 0;
+    transform: perspective(1000px) rotateX(15deg) rotateY(-8deg) translateX(-40px) translateY(30px) scale(0.9);
+  }
+  70% {
+    opacity: 1;
+    transform: perspective(1000px) rotateX(-2deg) rotateY(1deg) translateX(4px) translateY(-3px) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateX(0) translateY(0) scale(1);
+  }
+}
+
+@keyframes cardSplitRight {
+  0% {
+    opacity: 0;
+    transform: perspective(1000px) rotateX(15deg) rotateY(8deg) translateX(40px) translateY(30px) scale(0.9);
+  }
+  70% {
+    opacity: 1;
+    transform: perspective(1000px) rotateX(-2deg) rotateY(-1deg) translateX(-4px) translateY(-3px) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateX(0) translateY(0) scale(1);
+  }
+}
+
+@keyframes cardCollideSnap {
+  0% {
+    opacity: 0;
+    transform: perspective(800px) rotateX(20deg) translateY(40px) scale(0.88);
+  }
+  60% {
+    opacity: 1;
+    transform: perspective(800px) rotateX(-4deg) translateY(-6px) scale(1.02);
+  }
+  80% {
+    transform: perspective(800px) rotateX(2deg) translateY(2px) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(800px) rotateX(0deg) translateY(0) scale(1);
   }
 }
 
