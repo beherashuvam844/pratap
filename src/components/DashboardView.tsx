@@ -427,10 +427,10 @@ export default function DashboardView({
             </motion.div>
           ) : (
             <div className="space-y-6">
-              {filteredAndRankedResults.map((group) => (
+              {filteredAndRankedResults.map((group, idx) => (
                 <div 
                   key={group.id}
-                  className="bg-slate-950 border border-slate-800 rounded-3xl overflow-hidden shadow-xl"
+                  className={`bg-slate-950 border border-slate-800 rounded-3xl overflow-hidden shadow-xl card-lift-sm animate-fade-slide-up stagger-${(idx % 5) + 1}`}
                 >
                   {/* Event Section Header */}
                   <div className="bg-slate-900/80 px-6 py-4 border-b border-slate-800 flex items-center justify-between">
