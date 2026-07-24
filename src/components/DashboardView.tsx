@@ -270,18 +270,18 @@ export default function DashboardView({
       <section id="results-directory" className="space-y-6">
         
         {/* Header & Filter Controls */}
-        <div className="bg-slate-950 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-6">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-800/80 pb-5">
+        <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-6">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 pb-5">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <Trophy className="h-6 w-6 text-amber-500" />
-                <h3 className="text-2xl font-black text-white tracking-tight">Meet Results & Leaderboard</h3>
+                <Trophy className="h-6 w-6 text-[#D62828]" />
+                <h3 className="text-2xl font-black text-[#1F2937] tracking-tight">Meet Results & Leaderboard</h3>
               </div>
-              <p className="text-xs text-slate-400 font-medium">Official performance records with ranking breakdown</p>
+              <p className="text-xs text-slate-500 font-medium">Official performance records with ranking breakdown</p>
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="bg-indigo-950/60 text-indigo-400 border border-indigo-800/50 text-xs font-black px-3 py-1.5 rounded-xl font-mono">
+              <span className="bg-red-50 text-[#D62828] border border-red-200 text-xs font-black px-3 py-1.5 rounded-xl font-mono">
                 {totalResultsCount} Record{totalResultsCount === 1 ? '' : 's'} Listed
               </span>
             </div>
@@ -297,34 +297,34 @@ export default function DashboardView({
                 <select
                   value={selectedEvent}
                   onChange={(e) => setSelectedEvent(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl px-3.5 py-2.5 text-xs font-bold text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/30 transition appearance-none cursor-pointer"
+                  className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 rounded-xl px-3.5 py-2.5 text-xs font-bold text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-[#D62828]/20 transition appearance-none cursor-pointer"
                 >
-                  <option value="all" className="bg-slate-950 text-indigo-400 font-black">All Track & Field Events</option>
-                  <optgroup label="Sprints" className="bg-slate-950 text-slate-500 font-bold">
+                  <option value="all" className="text-[#D62828] font-black">All Track & Field Events</option>
+                  <optgroup label="Sprints" className="text-slate-500 font-bold">
                     <option value="100 m">100 m</option>
                     <option value="200 m">200 m</option>
                     <option value="400 m">400 m</option>
                   </optgroup>
-                  <optgroup label="Relays" className="bg-slate-950 text-slate-500 font-bold">
+                  <optgroup label="Relays" className="text-slate-500 font-bold">
                     <option value="4×100 m">4×100 m</option>
                     <option value="4×400 m">4×400 m</option>
                     <option value="4×100 m medley relay">4×100 m medley relay</option>
                   </optgroup>
-                  <optgroup label="Middle Distance" className="bg-slate-950 text-slate-500 font-bold">
+                  <optgroup label="Middle Distance" className="text-slate-500 font-bold">
                     <option value="800 m">800 m</option>
                     <option value="1500 m">1500 m</option>
                   </optgroup>
-                  <optgroup label="Long Distance" className="bg-slate-950 text-slate-500 font-bold">
+                  <optgroup label="Long Distance" className="text-slate-500 font-bold">
                     <option value="3000 m">3000 m</option>
                     <option value="5000 m">5000 m</option>
                     <option value="10000 m">10000 m</option>
                   </optgroup>
-                  <optgroup label="Jumps" className="bg-slate-950 text-slate-500 font-bold">
+                  <optgroup label="Jumps" className="text-slate-500 font-bold">
                     <option value="Long Jump">Long Jump</option>
                     <option value="High Jump">High Jump</option>
                     <option value="Triple Jump">Triple Jump</option>
                   </optgroup>
-                  <optgroup label="Throws" className="bg-slate-950 text-slate-500 font-bold">
+                  <optgroup label="Throws" className="text-slate-500 font-bold">
                     <option value="Shotput Throw">Shotput Throw</option>
                     <option value="Discus Throw">Discus Throw</option>
                     <option value="Javelin Throw">Javelin Throw</option>
@@ -342,18 +342,18 @@ export default function DashboardView({
             <div className="space-y-1.5">
               <label className="text-[10px] font-black text-slate-500 uppercase tracking-wider px-1">Search Athletes / Events</label>
               <div className="relative">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-indigo-400" />
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#2563EB]" />
                 <input
                   type="text"
                   placeholder="Athlete name, BIB, Roll ID..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-xs font-bold text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 transition"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs font-bold text-[#1F2937] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#D62828]/20 transition"
                 />
                 {searchQuery && (
                   <button 
                     onClick={() => setSearchQuery('')}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                   >
                     <X className="h-3.5 w-3.5" />
                   </button>
@@ -364,15 +364,15 @@ export default function DashboardView({
             {/* Gender Filter */}
             <div className="space-y-1.5">
               <label className="text-[10px] font-black text-slate-500 uppercase tracking-wider px-1">Gender</label>
-              <div className="flex bg-slate-900 rounded-xl border border-slate-800 p-1 h-[42px]">
+              <div className="flex bg-slate-100 rounded-xl border border-slate-200 p-1 h-[42px]">
                 {['All', 'Male', 'Female'].map((genderChoice) => (
                   <button
                     key={genderChoice}
                     onClick={() => setSelectedGender(genderChoice as any)}
-                    className={`flex-1 rounded-lg text-[10px] font-black uppercase tracking-wider transition ${
+                    className={`flex-1 rounded-lg text-[10px] font-black uppercase tracking-wider transition cursor-pointer ${
                       selectedGender === genderChoice
-                        ? 'bg-indigo-600 text-white shadow-md'
-                        : 'text-slate-400 hover:text-white'
+                        ? 'bg-[#D62828] text-white shadow-xs'
+                        : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >
                     {genderChoice}
@@ -388,7 +388,7 @@ export default function DashboardView({
                 <select
                   value={selectedYear}
                   onChange={(e) => setSelectedYear(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs font-bold text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/30 appearance-none cursor-pointer"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-[#D62828]/20 appearance-none cursor-pointer"
                 >
                   {uniqueYears.map(year => (
                     <option key={year} value={year}>{year}</option>
@@ -409,12 +409,12 @@ export default function DashboardView({
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="rounded-3xl border border-slate-800 bg-slate-950 py-16 text-center shadow-inner space-y-3"
+              className="rounded-3xl border border-slate-200 bg-white py-16 text-center shadow-xs space-y-3"
             >
-              <div className="bg-slate-900 w-14 h-14 rounded-2xl flex items-center justify-center mx-auto border border-slate-800">
-                <Award className="h-6 w-6 text-slate-600" />
+              <div className="bg-slate-100 w-14 h-14 rounded-2xl flex items-center justify-center mx-auto border border-slate-200">
+                <Award className="h-6 w-6 text-slate-400" />
               </div>
-              <p className="text-sm font-extrabold text-slate-400">No event metrics match your current filter</p>
+              <p className="text-sm font-extrabold text-slate-500">No event metrics match your current filter</p>
               <button 
                 onClick={() => {
                   setSearchQuery('');
@@ -422,7 +422,7 @@ export default function DashboardView({
                   setSelectedYear('All');
                   setSelectedEvent('all');
                 }} 
-                className="text-xs font-black text-indigo-400 hover:underline cursor-pointer"
+                className="text-xs font-black text-[#2563EB] hover:underline cursor-pointer"
               >
                 Reset All Filters
               </button>
@@ -432,29 +432,29 @@ export default function DashboardView({
               {filteredAndRankedResults.map((group, idx) => (
                 <div 
                   key={group.id}
-                  className={`bg-slate-950 border border-slate-800 rounded-3xl overflow-hidden shadow-xl card-lift-sm animate-fade-slide-up stagger-${(idx % 5) + 1}`}
+                  className={`bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-xs card-lift-sm animate-fade-slide-up stagger-${(idx % 5) + 1}`}
                 >
                   {/* Event Section Header */}
-                  <div className="bg-slate-900/80 px-6 py-4 border-b border-slate-800 flex items-center justify-between">
+                  <div className="bg-slate-50/80 px-6 py-4 border-b border-slate-200 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="h-9 w-9 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center justify-center font-bold">
+                      <div className="h-9 w-9 rounded-xl bg-red-50 text-[#D62828] border border-red-200 flex items-center justify-center font-bold">
                         <Trophy className="h-5 w-5" />
                       </div>
                       <div>
-                        <h4 className="text-base font-black text-white uppercase tracking-tight">{group.eventType}</h4>
+                        <h4 className="text-base font-black text-[#1F2937] uppercase tracking-tight">{group.eventType}</h4>
                         <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{group.tournament}</span>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-black text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-xl">
+                      <span className="text-xs font-black text-amber-800 bg-[#F4C430]/20 border border-[#F4C430]/50 px-3 py-1 rounded-xl">
                         {group.year}
                       </span>
                     </div>
                   </div>
 
                   {/* Profile Cards Container */}
-                  <div className="p-4 sm:p-5 space-y-4 bg-slate-950/60">
+                  <div className="p-4 sm:p-5 space-y-4 bg-slate-50/40">
                     {group.metrics.map((met, metIdx) => {
                       const displayRank = met.rank;
                       const athlete = poolOfAthletes.find(a => 
@@ -473,16 +473,16 @@ export default function DashboardView({
                       return (
                         <CardScrollWrapper key={met.id} index={metIdx}>
                           <div 
-                            className="bg-slate-900/80 hover:bg-slate-900 border border-slate-800 hover:border-indigo-500/50 p-5 sm:p-6 rounded-2xl sm:rounded-3xl transition-all duration-300 card-lift-sm group relative overflow-hidden backdrop-blur-sm flex flex-col md:flex-row md:items-center justify-between gap-5"
+                            className="bg-white hover:bg-slate-50 border border-slate-200 hover:border-red-200 p-5 sm:p-6 rounded-2xl sm:rounded-3xl transition-all duration-300 card-lift-sm group relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-5"
                           >
                           {/* Background Glow Overlay */}
-                          <div className="absolute -right-12 -bottom-12 w-48 h-48 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/20 transition-all duration-500 pointer-events-none" />
+                          <div className="absolute -right-12 -bottom-12 w-48 h-48 bg-red-500/5 rounded-full blur-2xl group-hover:bg-red-500/10 transition-all duration-500 pointer-events-none" />
 
                           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 min-w-0 z-10">
                             
                             {/* ATHLETE PHOTO CARD WITH DYNAMIC RING & RANK BADGE */}
                             <div className="relative shrink-0">
-                              <div className="relative group/photo h-20 w-20 sm:h-24 sm:w-24 rounded-2xl sm:rounded-3xl border-2 border-slate-800 bg-slate-950 overflow-hidden shrink-0 flex items-center justify-center shadow-xl shadow-slate-950/80 ring-2 ring-indigo-500/20 group-hover:ring-indigo-400 group-hover:scale-105 transition-all duration-300">
+                              <div className="relative group/photo h-20 w-20 sm:h-24 sm:w-24 rounded-2xl sm:rounded-3xl border-2 border-slate-200 bg-slate-100 overflow-hidden shrink-0 flex items-center justify-center shadow-xs ring-2 ring-red-500/10 group-hover:ring-red-500/30 group-hover:scale-105 transition-all duration-300">
                                 {photoUrl ? (
                                   <img 
                                     src={photoUrl} 
@@ -491,7 +491,7 @@ export default function DashboardView({
                                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                   />
                                 ) : (
-                                  <div className={`w-full h-full flex items-center justify-center text-xl sm:text-2xl font-black text-white ${athlete?.avatarColor || 'bg-gradient-to-br from-indigo-600 via-slate-800 to-slate-950'}`}>
+                                  <div className={`w-full h-full flex items-center justify-center text-xl sm:text-2xl font-black text-white ${athlete?.avatarColor || 'bg-gradient-to-br from-[#D62828] to-[#1F2937]'}`}>
                                     {met.athleteName.split(' ').map(n => n[0]).join('')}
                                   </div>
                                 )}
@@ -503,10 +503,10 @@ export default function DashboardView({
                                       e.stopPropagation();
                                       handleTriggerPhotoEdit(athlete?.id || met.athleteId, met.id, met.athleteName);
                                     }}
-                                    className="absolute inset-0 bg-slate-950/85 opacity-0 group-hover/photo:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1 text-amber-400 font-black text-[10px] uppercase tracking-wider cursor-pointer backdrop-blur-xs"
+                                    className="absolute inset-0 bg-[#1F2937]/90 opacity-0 group-hover/photo:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1 text-[#F4C430] font-black text-[10px] uppercase tracking-wider cursor-pointer backdrop-blur-xs"
                                     title="Edit Athlete Picture"
                                   >
-                                    <Camera className="h-5 w-5 text-amber-400" />
+                                    <Camera className="h-5 w-5 text-[#F4C430]" />
                                     <span>Edit Photo</span>
                                   </button>
                                 )}
@@ -514,11 +514,11 @@ export default function DashboardView({
 
                               {/* RANK BADGE OVERLAY */}
                               <div className={`
-                                absolute -top-2 -left-2 px-2.5 py-1 rounded-xl text-xs font-black font-mono shadow-xl flex items-center gap-1 border transition-transform group-hover:scale-110
-                                ${displayRank === 1 ? 'bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-slate-950 border-amber-200 shadow-amber-500/40' : 
-                                  displayRank === 2 ? 'bg-gradient-to-r from-slate-200 via-slate-100 to-slate-300 text-slate-950 border-white shadow-slate-400/40' : 
-                                  displayRank === 3 ? 'bg-gradient-to-r from-amber-700 via-amber-600 to-amber-800 text-white border-amber-500/60 shadow-amber-900/50' : 
-                                  'bg-slate-950/90 text-slate-300 border-slate-700'}
+                                absolute -top-2 -left-2 px-2.5 py-1 rounded-xl text-xs font-black font-mono shadow-xs flex items-center gap-1 border transition-transform group-hover:scale-110
+                                ${displayRank === 1 ? 'bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-slate-950 border-amber-200 shadow-amber-500/20' : 
+                                  displayRank === 2 ? 'bg-gradient-to-r from-slate-200 via-slate-100 to-slate-300 text-slate-950 border-white shadow-slate-400/20' : 
+                                  displayRank === 3 ? 'bg-gradient-to-r from-amber-700 via-amber-600 to-amber-800 text-white border-amber-500/60 shadow-amber-900/20' : 
+                                  'bg-slate-100 text-slate-700 border-slate-300'}
                               `}>
                                 {displayRank === 1 && <Crown className="h-3.5 w-3.5 text-slate-950 fill-slate-950 animate-bounce" />}
                                 {displayRank === 2 && <Trophy className="h-3 w-3 text-slate-950" />}
@@ -530,13 +530,13 @@ export default function DashboardView({
                             {/* ATHLETE DETAILS */}
                             <div className="min-w-0 space-y-2">
                               <div className="flex flex-wrap items-center gap-2">
-                                <h5 className="font-black text-white text-base sm:text-xl tracking-tight group-hover:text-indigo-300 transition-colors">
+                                <h5 className="font-black text-[#1F2937] text-base sm:text-xl tracking-tight group-hover:text-[#D62828] transition-colors">
                                   {met.athleteName}
                                 </h5>
 
                                 {/* Gender Badge */}
                                 <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase border shadow-2xs ${
-                                  gender === 'Female' ? 'bg-pink-500/10 text-pink-400 border-pink-500/30' : 'bg-blue-500/10 text-blue-400 border-blue-500/30'
+                                  gender === 'Female' ? 'bg-pink-50 text-pink-600 border-pink-200' : 'bg-blue-50 text-blue-600 border-blue-200'
                                 }`}>
                                   {gender}
                                 </span>
@@ -545,13 +545,13 @@ export default function DashboardView({
                               {/* BADGES ROW */}
                               <div className="flex flex-wrap items-center gap-2">
                                 {bibNumber && (
-                                  <span className="text-xs font-mono font-extrabold text-amber-400 bg-amber-500/10 border border-amber-500/25 px-2.5 py-1 rounded-xl flex items-center gap-1 shadow-2xs">
+                                  <span className="text-xs font-mono font-extrabold text-amber-800 bg-[#F4C430]/20 border border-[#F4C430]/40 px-2.5 py-1 rounded-xl flex items-center gap-1 shadow-2xs">
                                     BIB: #{bibNumber}
                                   </span>
                                 )}
 
                                 {rollId && (
-                                  <span className="text-xs font-mono font-extrabold text-indigo-400 bg-indigo-500/10 border border-indigo-500/25 px-2.5 py-1 rounded-xl flex items-center gap-1 shadow-2xs">
+                                  <span className="text-xs font-mono font-extrabold text-[#2563EB] bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-xl flex items-center gap-1 shadow-2xs">
                                     ID: {rollId}
                                   </span>
                                 )}
@@ -560,7 +560,7 @@ export default function DashboardView({
                                 {isAdmin && (
                                   <button
                                     onClick={() => handleTriggerPhotoEdit(athlete?.id || met.athleteId, met.id, met.athleteName)}
-                                    className="inline-flex items-center gap-1 text-xs font-extrabold text-amber-400 hover:text-amber-300 bg-amber-950/40 hover:bg-amber-900/60 border border-amber-700/50 px-2.5 py-1 rounded-xl transition cursor-pointer shadow-2xs"
+                                    className="inline-flex items-center gap-1 text-xs font-extrabold text-amber-800 hover:text-amber-900 bg-[#F4C430]/30 hover:bg-[#F4C430]/50 border border-[#F4C430] px-2.5 py-1 rounded-xl transition cursor-pointer shadow-2xs"
                                     title="Edit Athlete Picture"
                                   >
                                     <Camera className="h-3.5 w-3.5" />
@@ -570,19 +570,19 @@ export default function DashboardView({
                               </div>
 
                               {/* COLLEGE / CLUB INFO */}
-                              <div className="text-xs sm:text-sm font-bold text-slate-400 flex items-center gap-2">
+                              <div className="text-xs sm:text-sm font-bold text-slate-500 flex items-center gap-2">
                                 <span className="inline-block h-2 w-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                                <span>College / Club: <strong className="text-slate-200 font-extrabold">{college}</strong></span>
+                                <span>College / Club: <strong className="text-[#1F2937] font-extrabold">{college}</strong></span>
                               </div>
                             </div>
 
                           </div>
 
                           {/* SCORE & RECORD DISPLAY BOX */}
-                          <div className="flex items-center justify-between md:justify-end gap-4 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-slate-800/80 z-10">
-                            <div className="bg-slate-950/90 border border-slate-800 group-hover:border-indigo-500/40 px-5 py-3 rounded-2xl text-left md:text-right shadow-inner transition-colors">
+                          <div className="flex items-center justify-between md:justify-end gap-4 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-slate-100 z-10">
+                            <div className="bg-slate-50 border border-slate-200 group-hover:border-red-300 px-5 py-3 rounded-2xl text-left md:text-right shadow-xs transition-colors">
                               <span className="text-[9px] font-black uppercase text-slate-500 tracking-wider block">Official Mark / Score</span>
-                              <span className="text-xl sm:text-2xl font-black font-mono text-indigo-400 group-hover:text-amber-400 transition-colors tracking-tight">
+                              <span className="text-xl sm:text-2xl font-black font-mono text-[#D62828] transition-colors tracking-tight">
                                 {scoreStr}
                               </span>
                             </div>
@@ -590,7 +590,7 @@ export default function DashboardView({
                             {isAdmin && onDeleteMetric && (
                               <button
                                 onClick={() => onDeleteMetric(met.id)}
-                                className="p-3 text-slate-500 hover:text-rose-400 hover:bg-rose-950/30 rounded-2xl transition border border-transparent hover:border-rose-900/40 cursor-pointer"
+                                className="p-3 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-2xl transition border border-transparent hover:border-rose-200 cursor-pointer"
                                 title="Delete metric record"
                               >
                                 <Trash2 className="h-5 w-5" />
