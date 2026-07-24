@@ -2,7 +2,6 @@ import React, { useState, useMemo } from 'react';
 import { Athlete, PerformanceMetric, Competition } from '../types';
 import { normalizeEventName } from '../data/mockData';
 import { CardScrollWrapper } from './CardScrollWrapper';
-import { playCardSlideSound } from '../utils/soundEffects';
 import { compressImage } from '../utils/imageUtils';
 import { 
   Search, 
@@ -388,7 +387,6 @@ export default function PhotoGallery({
               <CardScrollWrapper key={m.id} index={idx}>
                 <div
                   onClick={() => handleOpenTrialLightbox(m)}
-                  onMouseEnter={playCardSlideSound}
                   className="group bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-2xs card-lift cursor-pointer flex flex-col justify-between h-full"
                 >
                   <div>
