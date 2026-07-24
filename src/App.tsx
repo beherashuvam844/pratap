@@ -10,6 +10,9 @@ import CompetitionScheduler from './components/CompetitionScheduler';
 import AdminPanel from './components/AdminPanel';
 import PhotoGallery from './components/PhotoGallery';
 import ClubLogo from './components/ClubLogo';
+import { SoundToggle } from './components/SoundToggle';
+import { CardScrollWrapper } from './components/CardScrollWrapper';
+import { playCardSlideSound } from './utils/soundEffects';
 import { Athlete, PerformanceMetric, Competition, Announcement, AdminUser } from './types';
 import { 
   INITIAL_ATHLETES, 
@@ -1804,6 +1807,9 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      {/* Audio Sound FX Toggle Widget */}
+      <SoundToggle />
 
     </div>
   );
