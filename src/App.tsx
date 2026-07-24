@@ -136,6 +136,7 @@ export default function App() {
       return;
     }
 
+    // Check primary admin credentials
     if (
       (enteredId.toLowerCase() === adminCredentials.id.toLowerCase()) &&
       enteredPass === adminCredentials.pass
@@ -145,9 +146,25 @@ export default function App() {
       setSuccessMsg(`Welcome Admin! Logged in as "${adminCredentials.id}".`);
       setAdminIdInput('');
       setAdminPasswordInput('');
-    } else {
-      setErrorMsg('Invalid Admin ID or Password. Please check your credentials.');
+      return;
     }
+
+    // Check created sub-admin credentials
+    const matchingAdmin = admins.find(a => 
+      a.email.toLowerCase() === enteredId.toLowerCase() || 
+      a.name.toLowerCase() === enteredId.toLowerCase()
+    );
+
+    if (matchingAdmin && matchingAdmin.password && matchingAdmin.password === enteredPass) {
+      setIsPasswordAdminLoggedIn(true);
+      setErrorMsg('');
+      setSuccessMsg(`Welcome Admin! Logged in as "${matchingAdmin.name}".`);
+      setAdminIdInput('');
+      setAdminPasswordInput('');
+      return;
+    }
+
+    setErrorMsg('Invalid Admin ID or Password. Please check your credentials.');
   };
 
   // Change Admin Credentials Handler
@@ -233,6 +250,7 @@ export default function App() {
               firestoreAdmins.push({
                 email: emailLower,
                 name: data.name || data.email.split('@')[0].toUpperCase(),
+                password: data.password || undefined,
                 addedDate: data.addedDate || data.addedAt?.split('T')[0] || new Date().toISOString().split('T')[0]
               });
             }
@@ -887,6 +905,7 @@ export default function App() {
         await setDoc(docRef, sanitizeData({
           email: newAdmin.email.toLowerCase(),
           name: newAdmin.name,
+          password: newAdmin.password || null,
           role: 'admin',
           addedAt: new Date().toISOString(),
           deleted: false
