@@ -66,11 +66,7 @@ export default function PhotoGallery({
     title: string;
     subtitle: string;
     description?: string;
-    badge?: string;
     club?: string;
-    gender?: string;
-    batch?: string;
-    metricsList?: PerformanceMetric[];
   } | null>(null);
 
   const [isZoomed, setIsZoomed] = useState(false);
@@ -112,6 +108,7 @@ export default function PhotoGallery({
   };
 
   const handleOpenAddModal = () => {
+    if (!isAdmin) return;
     setEditingMetric(null);
     setFormEventType('None');
     setFormValue('');
@@ -130,6 +127,7 @@ export default function PhotoGallery({
   };
 
   const handleOpenEditModal = (m: PerformanceMetric) => {
+    if (!isAdmin) return;
     setEditingMetric(m);
     setFormEventType(m.eventType);
     setFormValue(m.value);
@@ -149,13 +147,14 @@ export default function PhotoGallery({
 
   const handleSaveMetric = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isAdmin) return;
     if (!formPhotoUrl.trim()) {
       alert('Please select or specify a photo URL address.');
       return;
     }
 
     const metricPayload: PerformanceMetric = {
-      id: editingMetric ? editingMetric.id : 'metric-' + Date.now(),
+      id: editingMetric ? editingMetric.id : 'gallery-' + Date.now(),
       athleteId: 'tournament_gallery',
       athleteName: 'Tournament Photo',
       eventType: normalizeEventName(formEventType),
@@ -166,7 +165,8 @@ export default function PhotoGallery({
       venue: formVenue || 'Athletics Ground IISER KOLKATA',
       year: formYear || new Date().getFullYear().toString(),
       rank: editingMetric ? editingMetric.rank : 1,
-      photoUrl: formPhotoUrl
+      photoUrl: formPhotoUrl,
+      tags: ['gallery_photo']
     };
 
     if (editingMetric) {
@@ -180,6 +180,7 @@ export default function PhotoGallery({
   };
 
   const handleDeleteAction = (metricId: string) => {
+    if (!isAdmin) return;
     if (safeConfirm('Are you sure you want to delete this trial action photo from the gallery?')) {
       onDeleteMetric?.(metricId);
       if (selectedPhoto) {
@@ -188,23 +189,35 @@ export default function PhotoGallery({
     }
   };
 
-  // Get unique tournaments from metrics to filter by
+  // Get unique tournaments from explicit gallery photos to filter by
   const uniqueTournaments = useMemo(() => {
     const tourns = new Set<string>();
     metrics.forEach(m => {
-      if (m.photoUrl && m.tournament) tourns.add(m.tournament);
+      const isExplicitGalleryItem = 
+        m.athleteId === 'tournament_gallery' || 
+        m.tags?.includes('gallery_photo') || 
+        m.isGalleryPhoto === true;
+
+      if (isExplicitGalleryItem && m.photoUrl && m.tournament) {
+        tourns.add(m.tournament);
+      }
     });
     return Array.from(tourns).sort();
   }, [metrics]);
 
-  // Filtered Trial/Club Action Metrics with photos
+  // Filtered explicit gallery photos ONLY
   const filteredTrialMetrics = useMemo(() => {
     return metrics.filter((m) => {
       // Must have photoUrl
       if (!m.photoUrl) return false;
 
-      // Filter out non-event photos (marked by specific tags)
-      if (m.tags?.includes('profile_update')) return false;
+      // Must be an explicit gallery photo (no automatic dumping of athlete result photos)
+      const isExplicitGalleryItem = 
+        m.athleteId === 'tournament_gallery' || 
+        m.tags?.includes('gallery_photo') || 
+        m.isGalleryPhoto === true;
+
+      if (!isExplicitGalleryItem) return false;
 
       if (selectedTournament !== 'All' && m.tournament !== selectedTournament) return false;
 
@@ -225,9 +238,9 @@ export default function PhotoGallery({
 
     setSelectedPhoto({
       url: m.photoUrl,
-      title: `Pratap IISER Kolkata • ${m.eventType} Meet Action`,
-      subtitle: `${m.tournament} ${m.year ? `(${m.year})` : ''} • Recorded on ${m.date}`,
-      description: `Official competitive recording of the ${m.eventType} group results at ${m.venue} with a performance reading of ${m.value}${m.unit}.`,
+      title: m.eventType.toLowerCase() === 'general' ? m.tournament : `${m.tournament} • ${m.eventType}`,
+      subtitle: `${m.tournament} ${m.year ? `(${m.year})` : ''} • Captured on ${m.date}`,
+      description: `Tournament snapshot for ${m.eventType} at ${m.venue || 'IISER Kolkata'}.`,
       club: 'Pratap IISER Kolkata Athletics'
     });
   };
@@ -384,22 +397,16 @@ export default function PhotoGallery({
                       </div>
                     )}
 
-                    {/* Performance score plate */}
-                    {m.value > 0 && (
-                      <div className="absolute top-3 right-3 bg-slate-900/80 backdrop-blur-md text-white text-xs font-black font-mono border border-slate-600/30 px-3 py-1 rounded-md shadow">
-                        {m.value} {m.unit}
-                      </div>
-                    )}
                   </div>
 
-                  {/* Metadata trials parameters */}
+                  {/* Metadata parameters */}
                   <div className="p-4 flex-1 flex flex-col justify-between">
                     <div>
                       <h4 className="font-extrabold text-sm text-white group-hover:text-indigo-400 transition truncate">
                         {m.eventType.toLowerCase() === 'general' ? m.tournament : m.eventType}
                       </h4>
                       <p className="text-[10px] text-slate-400 font-bold mt-1 line-clamp-2 italic leading-relaxed">
-                        Performance metrics recorded at {m.tournament} {m.venue ? `(${m.venue})` : ''}.
+                        Snapshot from {m.tournament} {m.venue ? `(${m.venue})` : ''}.
                       </p>
                     </div>
 
@@ -482,11 +489,6 @@ export default function PhotoGallery({
               {/* Top Close trigger */}
               <div className="flex items-start justify-between border-b border-slate-800 pb-3">
                 <div>
-                  {selectedPhoto.badge && (
-                    <span className="bg-amber-950/30 text-amber-500 border border-amber-900/50 text-[10px] font-extrabold px-2.5 py-0.5 rounded uppercase block w-fit mb-1">
-                      🏆 {selectedPhoto.badge}
-                    </span>
-                  )}
                   <h3 className="text-xl font-black text-white tracking-tight leading-snug">
                     {selectedPhoto.title}
                   </h3>
@@ -508,7 +510,7 @@ export default function PhotoGallery({
               <div className="space-y-4">
                 <div className="space-y-2">
                   <span className="text-[10px] font-black uppercase text-indigo-400 tracking-widest block font-sans">
-                    Action Trial Session Notes
+                    Snapshot Information
                   </span>
                   <p className="text-xs text-slate-300 leading-relaxed font-semibold bg-slate-950 border border-slate-800 rounded-xl p-3.5">
                     {selectedPhoto.description}
@@ -525,35 +527,6 @@ export default function PhotoGallery({
                   </div>
                 )}
               </div>
-
-              {/* Related Trial Metrics and scores (If user selected Athlete profile view) */}
-              {selectedPhoto.metricsList && selectedPhoto.metricsList.length > 0 && (
-                <div className="space-y-3 pt-3 border-t border-slate-800">
-                  <span className="text-[10px] font-black uppercase text-indigo-400 tracking-widest block font-sans">
-                    Historic Performance Timeline
-                  </span>
-                  
-                  <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
-                    {selectedPhoto.metricsList.map((m) => (
-                      <div 
-                        key={m.id} 
-                        className="flex items-center justify-between border border-slate-800 bg-slate-950 hover:border-slate-700 p-2.5 rounded-xl transition-colors"
-                      >
-                        <div className="min-w-0">
-                          <span className="text-xs font-black text-white block truncate">{m.eventType} Trial</span>
-                          <span className="text-[9px] text-slate-500 font-bold font-mono">Recorded {m.date} • {m.venue}</span>
-                        </div>
-                        
-                        <div className="text-right flex items-center gap-1.5">
-                          <span className="text-xs font-mono font-black text-slate-300 bg-slate-800 px-2 py-1 rounded">
-                            {m.value} {m.unit}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
 
               {/* Instructions on close */}
               <div className="pt-4 border-t border-slate-800 flex items-center justify-between text-[10px] text-slate-500 font-bold">
