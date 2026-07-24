@@ -1,11 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { playCardCollideSound } from '../utils/soundEffects';
 
 interface CardScrollWrapperProps {
   children: React.ReactNode;
   className?: string;
   index?: number;
-  playSoundOnReveal?: boolean;
   key?: React.Key;
 }
 
@@ -13,7 +11,6 @@ export function CardScrollWrapper({
   children,
   className = '',
   index = 0,
-  playSoundOnReveal = true
 }: CardScrollWrapperProps) {
   const domRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -27,10 +24,6 @@ export function CardScrollWrapper({
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setIsVisible(true);
-            if (playSoundOnReveal) {
-              const pitchVariation = 0.85 + (index % 5) * 0.12;
-              playCardCollideSound(pitchVariation);
-            }
             observer.unobserve(entry.target);
           }
         });
@@ -46,7 +39,7 @@ export function CardScrollWrapper({
     return () => {
       if (node) observer.unobserve(node);
     };
-  }, [index, playSoundOnReveal]);
+  }, []);
 
   const splitClass = index % 2 === 0 ? 'card-deck-split-odd' : 'card-deck-split-even';
 
