@@ -29,6 +29,7 @@ export interface PerformanceMetric {
   rank: number;
   photoUrl?: string; // Action picture of the trial
   tags?: string[]; // Metadata tags
+  isGalleryPhoto?: boolean; // Explicit gallery photo indicator
 }
 
 export interface Competition {
