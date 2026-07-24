@@ -9,88 +9,39 @@ export const TR_FI_EVENTS = {
   Throws: ['Shotput Throw', 'Discus Throw', 'Javelin Throw'],
 };
 
-// Rich default athletes with high-quality athletic photos and Best Player configurations
-export const INITIAL_ATHLETES: Athlete[] = [
-  {
-    id: 'ath-1',
-    name: 'Siddharth Chatterjee',
-    roll: '22MS001',
-    bibNumber: '101',
-    gender: 'Male',
-    club: 'IISER Kolkata',
-    avatarColor: 'bg-emerald-500',
-    photoUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=400'
-  },
-  {
-    id: 'ath-2',
-    name: 'Sarah Jenkins',
-    roll: '21MS042',
-    bibNumber: '102',
-    gender: 'Female',
-    club: 'IISER Pune',
-    avatarColor: 'bg-amber-500',
-    photoUrl: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&q=80&w=400'
-  },
-  {
-    id: 'ath-3',
-    name: 'David Kim',
-    roll: '24MS115',
-    bibNumber: '103',
-    gender: 'Male',
-    club: 'IISER Mohali',
-    avatarColor: 'bg-blue-500',
-    photoUrl: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&q=80&w=400'
-  },
-  {
-    id: 'ath-4',
-    name: 'Elena Rostova',
-    roll: '23MS089',
-    bibNumber: '104',
-    gender: 'Female',
-    club: 'IIT Bombay',
-    avatarColor: 'bg-indigo-500',
-    photoUrl: 'https://images.unsplash.com/photo-1541252260730-0412e8e2108e?auto=format&fit=crop&q=80&w=400'
-  }
-];
+// Default athletes list is empty
+export const INITIAL_ATHLETES: Athlete[] = [];
 
 export const INITIAL_METRICS: PerformanceMetric[] = [
   {
-    id: 'm-1',
-    athleteId: 'ath-1',
-    athleteName: 'Siddharth Chatterjee',
-    bibNumber: '101',
-    roll: '22MS001',
-    college: 'IISER Kolkata',
-    gender: 'Male',
-    eventType: '100 m',
-    value: 10.65,
-    displayValue: '10.65s',
-    unit: 's',
-    date: '2026-01-15',
-    tournament: 'IISER Kolkata Trials',
+    id: 'gal-1',
+    athleteId: 'tournament_gallery',
+    athleteName: 'Pratap Tournament Photo',
+    eventType: 'General',
+    value: 0,
+    unit: '',
+    date: '2026-05-10',
+    tournament: 'Pratap Athletics Championship 2026',
     venue: 'Athletics Ground IISER KOLKATA',
     year: '2026',
     rank: 1,
-    photoUrl: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&q=80&w=300',
+    photoUrl: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&q=80&w=800',
+    tags: ['gallery_photo']
   },
   {
-    id: 'm-3',
-    athleteId: 'ath-1',
-    athleteName: 'Siddharth Chatterjee',
-    bibNumber: '101',
-    roll: '22MS001',
-    college: 'IISER Kolkata',
-    gender: 'Male',
+    id: 'gal-2',
+    athleteId: 'tournament_gallery',
+    athleteName: 'Pratap Action Shot',
     eventType: '100 m',
-    value: 10.42,
-    displayValue: '10.42s',
-    unit: 's',
-    date: '2026-04-12',
-    tournament: 'Pratap Qualifiers',
+    value: 0,
+    unit: '',
+    date: '2026-05-10',
+    tournament: 'Pratap Athletics Championship 2026',
     venue: 'Athletics Ground IISER KOLKATA',
     year: '2026',
     rank: 1,
-    photoUrl: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&q=80&w=300',
+    photoUrl: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&q=80&w=800',
+    tags: ['gallery_photo']
   }
 ];
 
@@ -105,7 +56,7 @@ export const INITIAL_COMPETITIONS: Competition[] = [
     description: 'The premium annual intra-mural tournament honoring excellence. Full speed sprints, high hurdles, jumps, and throw competitions.',
     events: ['100 m', '200 m', '800 m', 'Long Jump', 'High Jump'],
     status: 'Completed',
-    registeredAthleteIds: ['ath-1', 'ath-2', 'ath-4', 'ath-6'],
+    registeredAthleteIds: [],
     tier: 'Pratap',
   },
   {
@@ -117,7 +68,7 @@ export const INITIAL_COMPETITIONS: Competition[] = [
     description: 'Upcoming winter edition specializing solely in high vertical jumps, long distance leaps, shot put, and throw-offs.',
     events: ['Long Jump', 'High Jump', 'Triple Jump', 'Shotput Throw', 'Javelin Throw'],
     status: 'Upcoming',
-    registeredAthleteIds: ['ath-3', 'ath-4', 'ath-6'],
+    registeredAthleteIds: [],
     tier: 'Pratap',
   },
 
