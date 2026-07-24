@@ -1,13 +1,13 @@
 /**
- * Resizes and compresses an image data URL to ensure it stays within Firestore document limits (1MB) and localStorage quotas.
+ * Resizes and compresses an image data URL to ensure it stays well within Firestore document limits (1MB) and localStorage quotas.
  */
-export async function compressImage(dataUrl: string, maxWidth = 800, maxHeight = 800, quality = 0.65): Promise<string> {
+export async function compressImage(dataUrl: string, maxWidth = 640, maxHeight = 640, quality = 0.6): Promise<string> {
   if (!dataUrl || !dataUrl.startsWith('data:image')) {
     return dataUrl;
   }
   
-  // If string is already very small (< 15KB), return as is
-  if (dataUrl.length < 15000) {
+  // If string is already small (< 20KB), return as is
+  if (dataUrl.length < 20000) {
     return dataUrl;
   }
 
