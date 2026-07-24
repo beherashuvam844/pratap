@@ -1564,29 +1564,6 @@ export default function App() {
                     </p>
                   </div>
 
-                  {/* Assigned Default Credentials Callout Banner */}
-                  <div className="bg-gradient-to-br from-indigo-950/80 to-slate-950 p-4 rounded-2xl border border-indigo-500/30 text-left space-y-2">
-                    <div className="flex items-center justify-between text-indigo-300 font-black text-xs uppercase tracking-wider">
-                      <span className="flex items-center gap-1.5">
-                        <Key className="h-4 w-4 text-amber-400" />
-                        Assigned Login Credentials:
-                      </span>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2 text-xs font-mono bg-slate-900/90 p-3 rounded-xl border border-slate-800">
-                      <div>
-                        <span className="text-[10px] text-slate-500 font-sans font-bold uppercase block">Admin ID:</span>
-                        <span className="text-indigo-400 font-bold text-sm">{adminCredentials.id}</span>
-                      </div>
-                      <div>
-                        <span className="text-[10px] text-slate-500 font-sans font-bold uppercase block">Password:</span>
-                        <span className="text-amber-400 font-bold text-sm">{adminCredentials.pass}</span>
-                      </div>
-                    </div>
-                    <p className="text-[10px] text-slate-400 font-medium italic">
-                      💡 Log in with these credentials. You can change your Admin ID & Password anytime after logging in!
-                    </p>
-                  </div>
-
                   {/* Login Form */}
                   <form onSubmit={handleIdPasswordLogin} className="space-y-4 text-left relative z-10">
                     <div className="space-y-1.5">
@@ -1643,29 +1620,6 @@ export default function App() {
                       Log In to Admin Console
                     </button>
                   </form>
-
-                  <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setAdminIdInput(adminCredentials.id);
-                        setAdminPasswordInput(adminCredentials.pass);
-                      }}
-                      className="text-xs font-black text-indigo-400 hover:text-indigo-300 transition cursor-pointer"
-                    >
-                      ⚡ Auto-fill Credentials
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setIsPasswordAdminLoggedIn(true);
-                      }}
-                      className="text-xs font-bold text-slate-500 hover:text-slate-300 transition cursor-pointer"
-                    >
-                      Quick Demo Access
-                    </button>
-                  </div>
                 </div>
               </div>
             )}
