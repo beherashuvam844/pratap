@@ -58,5 +58,6 @@ export interface Announcement {
 export interface AdminUser {
   email: string;
   name: string;
+  password?: string;
   addedDate: string;
 }
