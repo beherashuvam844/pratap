@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { Athlete, PerformanceMetric, Competition } from '../types';
 import { normalizeEventName } from '../data/mockData';
+import { CardScrollWrapper } from './CardScrollWrapper';
+import { playCardSlideSound } from '../utils/soundEffects';
 import { 
   Search, 
   Filter, 
@@ -366,91 +368,92 @@ export default function PhotoGallery({
             )}
             
             {filteredTrialMetrics.map((m, idx) => (
-              <div
-                key={m.id}
-                onClick={() => handleOpenTrialLightbox(m)}
-                className={`group bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-2xs card-lift cursor-pointer flex flex-col justify-between animate-fade-slide-up stagger-${(idx % 5) + 1}`}
-              >
-                <div>
-                  {/* Photo Frame aspect */}
-                  <div className="relative aspect-video overflow-hidden bg-slate-950">
-                    <img
-                      src={m.photoUrl}
-                      alt={m.tournament}
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-cover group-hover:scale-105 duration-300 ease-in-out transition-transform"
-                    />
+              <CardScrollWrapper key={m.id} index={idx}>
+                <div
+                  onClick={() => handleOpenTrialLightbox(m)}
+                  onMouseEnter={playCardSlideSound}
+                  className="group bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-2xs card-lift cursor-pointer flex flex-col justify-between h-full"
+                >
+                  <div>
+                    {/* Photo Frame aspect */}
+                    <div className="relative aspect-video overflow-hidden bg-slate-950">
+                      <img
+                        src={m.photoUrl}
+                        alt={m.tournament}
+                        referrerPolicy="no-referrer"
+                        className="w-full h-full object-cover group-hover:scale-105 duration-300 ease-in-out transition-transform"
+                      />
 
-                    {/* Overlay view effect */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center p-4">
-                      <span className="bg-white/95 backdrop-blur-xs text-slate-900 px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1 shadow">
-                        <Eye className="h-3.5 w-3.5 text-indigo-600" />
-                        View Pratap Action
-                      </span>
-                    </div>
-
-                    {m.eventType.toLowerCase() !== 'general' && (
-                      <div className="absolute top-3 left-3 flex flex-col gap-1 items-start">
-                        <span className="bg-indigo-600 text-white text-[9px] font-black tracking-wider uppercase px-2.5 py-0.5 rounded-md shadow-xs">
-                          {m.eventType}
+                      {/* Overlay view effect */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center p-4">
+                        <span className="bg-white/95 backdrop-blur-xs text-slate-900 px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1 shadow">
+                          <Eye className="h-3.5 w-3.5 text-indigo-600" />
+                          View Pratap Action
                         </span>
                       </div>
-                    )}
 
-                  </div>
-
-                  {/* Metadata parameters */}
-                  <div className="p-4 flex-1 flex flex-col justify-between">
-                    <div>
-                      <h4 className="font-extrabold text-sm text-white group-hover:text-indigo-400 transition truncate">
-                        {m.eventType.toLowerCase() === 'general' ? m.tournament : m.eventType}
-                      </h4>
-                      <p className="text-[10px] text-slate-400 font-bold mt-1 line-clamp-2 italic leading-relaxed">
-                        Snapshot from {m.tournament} {m.venue ? `(${m.venue})` : ''}.
-                      </p>
+                      {m.eventType.toLowerCase() !== 'general' && (
+                        <div className="absolute top-3 left-3 flex flex-col gap-1 items-start">
+                          <span className="bg-indigo-600 text-white text-[9px] font-black tracking-wider uppercase px-2.5 py-0.5 rounded-md shadow-xs">
+                            {m.eventType}
+                          </span>
+                        </div>
+                      )}
                     </div>
 
-                    {/* Timing & Location Registry tags */}
-                    <div className="border-t border-slate-800 pt-3 mt-3 flex items-center justify-between text-slate-500 text-[10px] font-mono">
-                      <span className="flex items-center gap-1 font-bold">
-                        <MapPin className="h-3.5 w-3.5 text-slate-500" />
-                        {m.venue}
-                      </span>
-                      <span className="flex items-center gap-1 font-bold">
-                        <Calendar className="h-3.5 w-3.5 text-slate-500" />
-                        {m.date}
-                      </span>
+                    {/* Metadata parameters */}
+                    <div className="p-4 flex-1 flex flex-col justify-between">
+                      <div>
+                        <h4 className="font-extrabold text-sm text-white group-hover:text-indigo-400 transition truncate">
+                          {m.eventType.toLowerCase() === 'general' ? m.tournament : m.eventType}
+                        </h4>
+                        <p className="text-[10px] text-slate-400 font-bold mt-1 line-clamp-2 italic leading-relaxed">
+                          Snapshot from {m.tournament} {m.venue ? `(${m.venue})` : ''}.
+                        </p>
+                      </div>
+
+                      {/* Timing & Location Registry tags */}
+                      <div className="border-t border-slate-800 pt-3 mt-3 flex items-center justify-between text-slate-500 text-[10px] font-mono">
+                        <span className="flex items-center gap-1 font-bold">
+                          <MapPin className="h-3.5 w-3.5 text-slate-500" />
+                          {m.venue}
+                        </span>
+                        <span className="flex items-center gap-1 font-bold">
+                          <Calendar className="h-3.5 w-3.5 text-slate-500" />
+                          {m.date}
+                        </span>
+                      </div>
                     </div>
                   </div>
+
+                  {isAdmin && (
+                    <div className="border-t border-slate-800 bg-slate-950/80 p-3 flex items-center gap-2 rounded-b-2xl">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOpenEditModal(m);
+                        }}
+                        className="flex-1 bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-extrabold py-2 px-3 rounded-xl transition border border-slate-800 flex items-center justify-center gap-1 cursor-pointer"
+                      >
+                        <Edit2 className="h-3.5 w-3.5 text-indigo-400" />
+                        Edit Details
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteAction(m.id);
+                        }}
+                        className="bg-slate-900 hover:bg-rose-950/30 text-rose-500 hover:text-rose-400 text-xs font-extrabold p-2.5 rounded-xl transition border border-slate-800 flex items-center justify-center cursor-pointer"
+                        title="Delete Action Shot"
+                      >
+                        <Trash2 className="h-3.5 w-3.5 text-rose-500" />
+                      </button>
+                    </div>
+                  )}
                 </div>
-
-                {isAdmin && (
-                  <div className="border-t border-slate-800 bg-slate-950/80 p-3 flex items-center gap-2 rounded-b-2xl">
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleOpenEditModal(m);
-                      }}
-                      className="flex-1 bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-extrabold py-2 px-3 rounded-xl transition border border-slate-800 flex items-center justify-center gap-1 cursor-pointer"
-                    >
-                      <Edit2 className="h-3.5 w-3.5 text-indigo-400" />
-                      Edit Details
-                    </button>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteAction(m.id);
-                      }}
-                      className="bg-slate-900 hover:bg-rose-950/30 text-rose-500 hover:text-rose-400 text-xs font-extrabold p-2.5 rounded-xl transition border border-slate-800 flex items-center justify-center cursor-pointer"
-                      title="Delete Action Shot"
-                    >
-                      <Trash2 className="h-3.5 w-3.5 text-rose-500" />
-                    </button>
-                  </div>
-                )}
-              </div>
+              </CardScrollWrapper>
             ))}
           </div>
         )}
