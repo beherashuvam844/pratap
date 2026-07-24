@@ -11,6 +11,7 @@ import {
   Trash2, 
   X,
   Medal,
+  Crown,
   UserCheck,
   Camera,
   Check
@@ -451,8 +452,8 @@ export default function DashboardView({
                     </div>
                   </div>
 
-                  {/* List Items */}
-                  <div className="divide-y divide-slate-800/60">
+                  {/* Profile Cards Container */}
+                  <div className="p-4 sm:p-5 space-y-4 bg-slate-950/60">
                     {group.metrics.map((met) => {
                       const displayRank = met.rank;
                       const athlete = poolOfAthletes.find(a => 
@@ -471,113 +472,127 @@ export default function DashboardView({
                       return (
                         <div 
                           key={met.id}
-                          className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-slate-900/40 transition group"
+                          className="bg-slate-900/80 hover:bg-slate-900 border border-slate-800 hover:border-indigo-500/50 p-5 sm:p-6 rounded-2xl sm:rounded-3xl transition-all duration-300 card-lift-sm group relative overflow-hidden backdrop-blur-sm flex flex-col md:flex-row md:items-center justify-between gap-5"
                         >
-                          <div className="flex items-center gap-4 min-w-0">
+                          {/* Background Glow Overlay */}
+                          <div className="absolute -right-12 -bottom-12 w-48 h-48 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/20 transition-all duration-500 pointer-events-none" />
+
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 min-w-0 z-10">
                             
-                            {/* RANK BADGE */}
-                            <div className={`
-                              w-12 h-12 rounded-2xl flex flex-col items-center justify-center shrink-0 border transition-transform group-hover:scale-105
-                              ${displayRank === 1 ? 'bg-amber-500/20 border-amber-500/50 text-amber-400 shadow-md shadow-amber-950/20' : 
-                                displayRank === 2 ? 'bg-slate-400/20 border-slate-400/50 text-slate-200' : 
-                                displayRank === 3 ? 'bg-amber-700/20 border-amber-700/50 text-amber-500' : 'bg-slate-900 border-slate-800 text-slate-400'}
-                            `}>
-                              <span className="text-[7px] font-black uppercase tracking-tighter opacity-70">RANK</span>
-                              <span className="text-sm font-black font-mono">#{displayRank}</span>
-                            </div>
-
-                            {/* ATHLETE PHOTO / AVATAR WITH ADMIN EDIT OVERLAY */}
-                            <div className="relative group/photo h-12 w-12 rounded-2xl border border-slate-800 bg-slate-900 overflow-hidden shrink-0 flex items-center justify-center shadow-md">
-                              {photoUrl ? (
-                                <img 
-                                  src={photoUrl} 
-                                  alt={met.athleteName} 
-                                  referrerPolicy="no-referrer"
-                                  className="w-full h-full object-cover"
-                                />
-                              ) : (
-                                <div className={`w-full h-full flex items-center justify-center text-xs font-black text-white ${athlete?.avatarColor || 'bg-slate-800'}`}>
-                                  {met.athleteName.split(' ').map(n => n[0]).join('')}
-                                </div>
-                              )}
-
-                              {/* Hover Edit Overlay for Admins */}
-                              {isAdmin && (
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleTriggerPhotoEdit(athlete?.id || met.athleteId, met.id, met.athleteName);
-                                  }}
-                                  className="absolute inset-0 bg-slate-950/80 opacity-0 group-hover/photo:opacity-100 transition-opacity flex flex-col items-center justify-center gap-0.5 text-amber-400 font-extrabold text-[8px] uppercase tracking-wider cursor-pointer"
-                                  title="Edit Athlete Picture"
-                                >
-                                  <Camera className="h-4 w-4 text-amber-400" />
-                                  <span>Edit</span>
-                                </button>
-                              )}
-                            </div>
-
-                            {/* ATHLETE DETAILS */}
-                            <div className="min-w-0 space-y-1">
-                              <div className="flex flex-wrap items-center gap-2">
-                                <span className="font-extrabold text-white text-sm sm:text-base leading-tight">{met.athleteName}</span>
-                                
-                                {bibNumber && (
-                                  <span className="text-[10px] font-mono font-black text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-lg">
-                                    BIB: #{bibNumber}
-                                  </span>
+                            {/* ATHLETE PHOTO CARD WITH DYNAMIC RING & RANK BADGE */}
+                            <div className="relative shrink-0">
+                              <div className="relative group/photo h-20 w-20 sm:h-24 sm:w-24 rounded-2xl sm:rounded-3xl border-2 border-slate-800 bg-slate-950 overflow-hidden shrink-0 flex items-center justify-center shadow-xl shadow-slate-950/80 ring-2 ring-indigo-500/20 group-hover:ring-indigo-400 group-hover:scale-105 transition-all duration-300">
+                                {photoUrl ? (
+                                  <img 
+                                    src={photoUrl} 
+                                    alt={met.athleteName} 
+                                    referrerPolicy="no-referrer"
+                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                  />
+                                ) : (
+                                  <div className={`w-full h-full flex items-center justify-center text-xl sm:text-2xl font-black text-white ${athlete?.avatarColor || 'bg-gradient-to-br from-indigo-600 via-slate-800 to-slate-950'}`}>
+                                    {met.athleteName.split(' ').map(n => n[0]).join('')}
+                                  </div>
                                 )}
 
-                                {rollId && (
-                                  <span className="text-[10px] font-mono font-black text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 rounded-lg">
-                                    ID: {rollId}
-                                  </span>
-                                )}
-
-                                <span className={`text-[9px] font-black px-2 py-0.5 rounded-lg uppercase border ${
-                                  gender === 'Female' ? 'bg-pink-500/10 text-pink-400 border-pink-500/20' : 'bg-blue-500/10 text-blue-400 border-blue-500/20'
-                                }`}>
-                                  {gender}
-                                </span>
-
-                                {/* Admin explicit edit photo button */}
+                                {/* Hover Edit Overlay for Admins */}
                                 {isAdmin && (
                                   <button
-                                    onClick={() => handleTriggerPhotoEdit(athlete?.id || met.athleteId, met.id, met.athleteName)}
-                                    className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-400 hover:text-amber-300 bg-amber-950/30 hover:bg-amber-900/40 border border-amber-800/40 px-2 py-0.5 rounded-lg transition cursor-pointer"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleTriggerPhotoEdit(athlete?.id || met.athleteId, met.id, met.athleteName);
+                                    }}
+                                    className="absolute inset-0 bg-slate-950/85 opacity-0 group-hover/photo:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1 text-amber-400 font-black text-[10px] uppercase tracking-wider cursor-pointer backdrop-blur-xs"
                                     title="Edit Athlete Picture"
                                   >
-                                    <Camera className="h-3 w-3" />
+                                    <Camera className="h-5 w-5 text-amber-400" />
                                     <span>Edit Photo</span>
                                   </button>
                                 )}
                               </div>
 
-                              <div className="text-xs font-semibold text-slate-400 truncate flex items-center gap-2">
-                                <span>College/Club: <strong className="text-slate-300 font-bold">{college}</strong></span>
+                              {/* RANK BADGE OVERLAY */}
+                              <div className={`
+                                absolute -top-2 -left-2 px-2.5 py-1 rounded-xl text-xs font-black font-mono shadow-xl flex items-center gap-1 border transition-transform group-hover:scale-110
+                                ${displayRank === 1 ? 'bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-slate-950 border-amber-200 shadow-amber-500/40' : 
+                                  displayRank === 2 ? 'bg-gradient-to-r from-slate-200 via-slate-100 to-slate-300 text-slate-950 border-white shadow-slate-400/40' : 
+                                  displayRank === 3 ? 'bg-gradient-to-r from-amber-700 via-amber-600 to-amber-800 text-white border-amber-500/60 shadow-amber-900/50' : 
+                                  'bg-slate-950/90 text-slate-300 border-slate-700'}
+                              `}>
+                                {displayRank === 1 && <Crown className="h-3.5 w-3.5 text-slate-950 fill-slate-950 animate-bounce" />}
+                                {displayRank === 2 && <Trophy className="h-3 w-3 text-slate-950" />}
+                                {displayRank === 3 && <Medal className="h-3 w-3 text-amber-200" />}
+                                <span>#{displayRank}</span>
+                              </div>
+                            </div>
+
+                            {/* ATHLETE DETAILS */}
+                            <div className="min-w-0 space-y-2">
+                              <div className="flex flex-wrap items-center gap-2">
+                                <h5 className="font-black text-white text-base sm:text-xl tracking-tight group-hover:text-indigo-300 transition-colors">
+                                  {met.athleteName}
+                                </h5>
+
+                                {/* Gender Badge */}
+                                <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase border shadow-2xs ${
+                                  gender === 'Female' ? 'bg-pink-500/10 text-pink-400 border-pink-500/30' : 'bg-blue-500/10 text-blue-400 border-blue-500/30'
+                                }`}>
+                                  {gender}
+                                </span>
+                              </div>
+
+                              {/* BADGES ROW */}
+                              <div className="flex flex-wrap items-center gap-2">
+                                {bibNumber && (
+                                  <span className="text-xs font-mono font-extrabold text-amber-400 bg-amber-500/10 border border-amber-500/25 px-2.5 py-1 rounded-xl flex items-center gap-1 shadow-2xs">
+                                    BIB: #{bibNumber}
+                                  </span>
+                                )}
+
+                                {rollId && (
+                                  <span className="text-xs font-mono font-extrabold text-indigo-400 bg-indigo-500/10 border border-indigo-500/25 px-2.5 py-1 rounded-xl flex items-center gap-1 shadow-2xs">
+                                    ID: {rollId}
+                                  </span>
+                                )}
+
+                                {/* Admin explicit edit photo button */}
+                                {isAdmin && (
+                                  <button
+                                    onClick={() => handleTriggerPhotoEdit(athlete?.id || met.athleteId, met.id, met.athleteName)}
+                                    className="inline-flex items-center gap-1 text-xs font-extrabold text-amber-400 hover:text-amber-300 bg-amber-950/40 hover:bg-amber-900/60 border border-amber-700/50 px-2.5 py-1 rounded-xl transition cursor-pointer shadow-2xs"
+                                    title="Edit Athlete Picture"
+                                  >
+                                    <Camera className="h-3.5 w-3.5" />
+                                    <span>Update Photo</span>
+                                  </button>
+                                )}
+                              </div>
+
+                              {/* COLLEGE / CLUB INFO */}
+                              <div className="text-xs sm:text-sm font-bold text-slate-400 flex items-center gap-2">
+                                <span className="inline-block h-2 w-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                                <span>College / Club: <strong className="text-slate-200 font-extrabold">{college}</strong></span>
                               </div>
                             </div>
 
                           </div>
 
-                          {/* SCORE & ACTIONS */}
-                          <div className="flex items-center justify-between sm:justify-end gap-4 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-900">
-                            <div className="text-left sm:text-right">
-                              <span className="text-[8px] font-black uppercase text-slate-500 tracking-wider block">Mark / Score</span>
-                              <span className="text-lg sm:text-xl font-black font-mono text-indigo-400 tracking-tight">
+                          {/* SCORE & RECORD DISPLAY BOX */}
+                          <div className="flex items-center justify-between md:justify-end gap-4 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-slate-800/80 z-10">
+                            <div className="bg-slate-950/90 border border-slate-800 group-hover:border-indigo-500/40 px-5 py-3 rounded-2xl text-left md:text-right shadow-inner transition-colors">
+                              <span className="text-[9px] font-black uppercase text-slate-500 tracking-wider block">Official Mark / Score</span>
+                              <span className="text-xl sm:text-2xl font-black font-mono text-indigo-400 group-hover:text-amber-400 transition-colors tracking-tight">
                                 {scoreStr}
                               </span>
                             </div>
 
                             {isAdmin && onDeleteMetric && (
                               <button
-                                onClick={() => {
-                                  onDeleteMetric(met.id);
-                                }}
-                                className="p-2 text-slate-500 hover:text-rose-400 hover:bg-rose-950/20 rounded-xl transition border border-transparent hover:border-rose-900/30 cursor-pointer"
+                                onClick={() => onDeleteMetric(met.id)}
+                                className="p-3 text-slate-500 hover:text-rose-400 hover:bg-rose-950/30 rounded-2xl transition border border-transparent hover:border-rose-900/40 cursor-pointer"
                                 title="Delete metric record"
                               >
-                                <Trash2 className="h-4 w-4" />
+                                <Trash2 className="h-5 w-5" />
                               </button>
                             )}
                           </div>
