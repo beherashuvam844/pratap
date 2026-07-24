@@ -4,7 +4,6 @@ import { Athlete, PerformanceMetric, Competition } from '../types';
 import ImageCropperModal from './ImageCropperModal';
 import { normalizeEventName } from '../data/mockData';
 import { CardScrollWrapper } from './CardScrollWrapper';
-import { playCardSlideSound } from '../utils/soundEffects';
 import { 
   Search, 
   Filter, 
@@ -474,7 +473,6 @@ export default function DashboardView({
                       return (
                         <CardScrollWrapper key={met.id} index={metIdx}>
                           <div 
-                            onMouseEnter={playCardSlideSound}
                             className="bg-slate-900/80 hover:bg-slate-900 border border-slate-800 hover:border-indigo-500/50 p-5 sm:p-6 rounded-2xl sm:rounded-3xl transition-all duration-300 card-lift-sm group relative overflow-hidden backdrop-blur-sm flex flex-col md:flex-row md:items-center justify-between gap-5"
                           >
                           {/* Background Glow Overlay */}
