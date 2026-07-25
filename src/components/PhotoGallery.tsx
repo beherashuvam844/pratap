@@ -302,21 +302,21 @@ export default function PhotoGallery({
       </div>
 
       {/* Main Filter Toolbar Grid */}
-      <div className="bg-slate-900 border border-slate-800 p-5 rounded-3xl flex flex-col md:flex-row md:items-center md:justify-between gap-4 shadow-2xs" id="gallery-toolbar">
+      <div className="bg-white border border-slate-200 p-5 rounded-3xl flex flex-col md:flex-row md:items-center md:justify-between gap-4 shadow-sm" id="gallery-toolbar">
         {/* Search Input bar */}
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3.5 top-3 h-4 w-4 text-slate-500" />
+          <Search className="absolute left-3.5 top-3 h-4 w-4 text-[#2563EB]" />
           <input
             type="text"
             placeholder="Search trials by event type, student, or campus..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-10 pr-4 py-2.5 text-xs font-bold text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-left transition"
+            className="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-10 pr-4 py-2.5 text-xs font-bold text-[#1F2937] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#D62828]/20 text-left transition"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-3.5 text-xs text-slate-400 hover:text-slate-700"
+              className="absolute right-3 top-3.5 text-xs text-slate-400 hover:text-slate-600"
             >
               Clear
             </button>
@@ -334,8 +334,8 @@ export default function PhotoGallery({
                 onClick={() => setSelectedTournament('All')}
                 className={`px-3 py-1.5 text-xs font-black rounded-lg border transition cursor-pointer ${
                   selectedTournament === 'All'
-                    ? 'bg-indigo-950 text-indigo-400 border-indigo-500/30'
-                    : 'bg-slate-900 text-slate-400 border-slate-800'
+                    ? 'bg-[#D62828] text-white border-red-300'
+                    : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
                 }`}
               >
                 All Moments
@@ -346,8 +346,8 @@ export default function PhotoGallery({
                   onClick={() => setSelectedTournament(t)}
                   className={`px-3 py-1.5 text-xs font-black rounded-lg border transition cursor-pointer ${
                     selectedTournament === t
-                      ? 'bg-indigo-950 text-indigo-400 border-indigo-500/30'
-                      : 'bg-slate-900 text-slate-400 border-slate-800'
+                      ? 'bg-[#D62828] text-white border-red-300'
+                      : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
                   }`}
                 >
                   {t}
@@ -361,9 +361,9 @@ export default function PhotoGallery({
       {/* COMPETITIVE CLUB TRIAL IMAGES GRID */}
       <div className="space-y-6" id="gallery-trials-pane">
         {filteredTrialMetrics.length === 0 && !isAdmin ? (
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-16 text-center text-slate-500 space-y-3">
+          <div className="bg-white border border-slate-200 rounded-3xl p-16 text-center text-slate-500 space-y-3">
             <span className="text-3xl">🏃‍♂️</span>
-            <p className="text-sm font-bold text-slate-300">No high-res trial execution snapshots recorded yet.</p>
+            <p className="text-sm font-bold text-[#1F2937]">No high-res trial execution snapshots recorded yet.</p>
             <p className="text-xs text-slate-500">Try re-adjusting filters or search query parameters.</p>
           </div>
         ) : (
@@ -371,13 +371,13 @@ export default function PhotoGallery({
             {isAdmin && (
               <div 
                 onClick={handleOpenAddModal}
-                className="group bg-slate-950 rounded-2xl border-2 border-dashed border-slate-800 hover:border-slate-700 hover:bg-slate-900 p-8 flex flex-col items-center justify-center text-center cursor-pointer transition duration-150 min-h-[280px]"
+                className="group bg-white rounded-2xl border-2 border-dashed border-slate-300 hover:border-[#D62828] hover:bg-red-50/30 p-8 flex flex-col items-center justify-center text-center cursor-pointer transition duration-150 min-h-[280px]"
               >
-                <div className="h-12 w-12 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center group-hover:bg-indigo-950 group-hover:text-indigo-400 transition border border-slate-700">
+                <div className="h-12 w-12 rounded-full bg-red-50 text-[#D62828] flex items-center justify-center group-hover:bg-[#D62828] group-hover:text-white transition border border-red-200">
                   <Plus className="h-6 w-6" />
                 </div>
-                <h4 className="font-extrabold text-sm text-slate-700 mt-4 group-hover:text-indigo-650">Add Dynamic Photo</h4>
-                <p className="text-xs text-slate-400 mt-1 max-w-[200px] leading-relaxed">
+                <h4 className="font-extrabold text-sm text-[#1F2937] mt-4 group-hover:text-[#D62828]">Add Dynamic Photo</h4>
+                <p className="text-xs text-slate-500 mt-1 max-w-[200px] leading-relaxed">
                   Upload an athlete action frame & trials record
                 </p>
               </div>
@@ -387,11 +387,11 @@ export default function PhotoGallery({
               <CardScrollWrapper key={m.id} index={idx}>
                 <div
                   onClick={() => handleOpenTrialLightbox(m)}
-                  className="group bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-2xs card-lift cursor-pointer flex flex-col justify-between h-full"
+                  className="group bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs card-lift cursor-pointer flex flex-col justify-between h-full"
                 >
                   <div>
                     {/* Photo Frame aspect */}
-                    <div className="relative aspect-video overflow-hidden bg-slate-950">
+                    <div className="relative aspect-video overflow-hidden bg-slate-100">
                       <img
                         src={m.photoUrl}
                         alt={m.tournament}
@@ -400,16 +400,16 @@ export default function PhotoGallery({
                       />
 
                       {/* Overlay view effect */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center p-4">
-                        <span className="bg-white/95 backdrop-blur-xs text-slate-900 px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1 shadow">
-                          <Eye className="h-3.5 w-3.5 text-indigo-600" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#1F2937]/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center p-4">
+                        <span className="bg-white/95 backdrop-blur-xs text-[#1F2937] px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1 shadow">
+                          <Eye className="h-3.5 w-3.5 text-[#2563EB]" />
                           View Pratap Action
                         </span>
                       </div>
 
                       {m.eventType.toLowerCase() !== 'general' && (
                         <div className="absolute top-3 left-3 flex flex-col gap-1 items-start">
-                          <span className="bg-indigo-600 text-white text-[9px] font-black tracking-wider uppercase px-2.5 py-0.5 rounded-md shadow-xs">
+                          <span className="bg-[#D62828] text-white text-[9px] font-black tracking-wider uppercase px-2.5 py-0.5 rounded-md shadow-xs">
                             {m.eventType}
                           </span>
                         </div>
@@ -419,22 +419,22 @@ export default function PhotoGallery({
                     {/* Metadata parameters */}
                     <div className="p-4 flex-1 flex flex-col justify-between">
                       <div>
-                        <h4 className="font-extrabold text-sm text-white group-hover:text-indigo-400 transition truncate">
+                        <h4 className="font-extrabold text-sm text-[#1F2937] group-hover:text-[#D62828] transition truncate">
                           {m.eventType.toLowerCase() === 'general' ? m.tournament : m.eventType}
                         </h4>
-                        <p className="text-[10px] text-slate-400 font-bold mt-1 line-clamp-2 italic leading-relaxed">
+                        <p className="text-[10px] text-slate-500 font-bold mt-1 line-clamp-2 italic leading-relaxed">
                           Snapshot from {m.tournament} {m.venue ? `(${m.venue})` : ''}.
                         </p>
                       </div>
 
                       {/* Timing & Location Registry tags */}
-                      <div className="border-t border-slate-800 pt-3 mt-3 flex items-center justify-between text-slate-500 text-[10px] font-mono">
+                      <div className="border-t border-slate-100 pt-3 mt-3 flex items-center justify-between text-slate-500 text-[10px] font-mono">
                         <span className="flex items-center gap-1 font-bold">
-                          <MapPin className="h-3.5 w-3.5 text-slate-500" />
+                          <MapPin className="h-3.5 w-3.5 text-slate-400" />
                           {m.venue}
                         </span>
                         <span className="flex items-center gap-1 font-bold">
-                          <Calendar className="h-3.5 w-3.5 text-slate-500" />
+                          <Calendar className="h-3.5 w-3.5 text-slate-400" />
                           {m.date}
                         </span>
                       </div>
@@ -442,16 +442,16 @@ export default function PhotoGallery({
                   </div>
 
                   {isAdmin && (
-                    <div className="border-t border-slate-800 bg-slate-950/80 p-3 flex items-center gap-2 rounded-b-2xl">
+                    <div className="border-t border-slate-100 bg-slate-50 p-3 flex items-center gap-2 rounded-b-2xl">
                       <button
                         type="button"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleOpenEditModal(m);
                         }}
-                        className="flex-1 bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-extrabold py-2 px-3 rounded-xl transition border border-slate-800 flex items-center justify-center gap-1 cursor-pointer"
+                        className="flex-1 bg-white hover:bg-slate-100 text-[#1F2937] text-xs font-extrabold py-2 px-3 rounded-xl transition border border-slate-200 flex items-center justify-center gap-1 cursor-pointer"
                       >
-                        <Edit2 className="h-3.5 w-3.5 text-indigo-400" />
+                        <Edit2 className="h-3.5 w-3.5 text-[#2563EB]" />
                         Edit Details
                       </button>
                       <button
@@ -460,7 +460,7 @@ export default function PhotoGallery({
                           e.stopPropagation();
                           handleDeleteAction(m.id);
                         }}
-                        className="bg-slate-900 hover:bg-rose-950/30 text-rose-500 hover:text-rose-400 text-xs font-extrabold p-2.5 rounded-xl transition border border-slate-800 flex items-center justify-center cursor-pointer"
+                        className="bg-white hover:bg-rose-50 text-rose-600 hover:text-rose-700 text-xs font-extrabold p-2.5 rounded-xl transition border border-slate-200 hover:border-rose-200 flex items-center justify-center cursor-pointer"
                         title="Delete Action Shot"
                       >
                         <Trash2 className="h-3.5 w-3.5 text-rose-500" />
@@ -477,17 +477,17 @@ export default function PhotoGallery({
       {/* SELECTION DETAIL MODAL / IMMERSION LIGHTBOX */}
       {selectedPhoto && (
         <div 
-          className="fixed inset-0 z-[1000] bg-slate-900/80 backdrop-blur-md flex items-start sm:items-center justify-center p-4 pt-24 sm:p-6 overflow-y-auto"
+          className="fixed inset-0 z-[1000] bg-slate-900/60 backdrop-blur-md flex items-start sm:items-center justify-center p-4 pt-24 sm:p-6 overflow-y-auto"
           id="gallery-lightbox-modal"
           onClick={() => setSelectedPhoto(null)}
         >
           {/* Main Modal body */}
           <div 
-            className="bg-slate-900 rounded-3xl overflow-hidden max-w-4xl w-full border border-slate-800 shadow-2xl relative flex flex-col md:flex-row antialiased animate-scale-up"
+            className="bg-white rounded-3xl overflow-hidden max-w-4xl w-full border border-slate-200 shadow-2xl relative flex flex-col md:flex-row antialiased animate-scale-up"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Image Preview Frame (Left/Top side) */}
-            <div className="relative flex-1 bg-slate-950 aspect-square md:aspect-auto md:max-h-[550px] group/zoom cursor-zoom-in overflow-hidden" onClick={() => setIsZoomed(true)}>
+            <div className="relative flex-1 bg-slate-100 aspect-square md:aspect-auto md:max-h-[550px] group/zoom cursor-zoom-in overflow-hidden" onClick={() => setIsZoomed(true)}>
               <img
                 src={selectedPhoto.url}
                 alt={selectedPhoto.title}
@@ -505,9 +505,9 @@ export default function PhotoGallery({
             <div className="p-6 md:p-8 flex-1 flex flex-col justify-between max-h-[550px] overflow-y-auto space-y-6">
               
               {/* Top Close trigger */}
-              <div className="flex items-start justify-between border-b border-slate-800 pb-3">
+              <div className="flex items-start justify-between border-b border-slate-100 pb-3">
                 <div>
-                  <h3 className="text-xl font-black text-white tracking-tight leading-snug">
+                  <h3 className="text-xl font-black text-[#1F2937] tracking-tight leading-snug">
                     {selectedPhoto.title}
                   </h3>
                   <p className="text-xs text-slate-500 font-mono font-bold mt-0.5">
@@ -517,7 +517,7 @@ export default function PhotoGallery({
                 
                 <button
                   onClick={() => setSelectedPhoto(null)}
-                  className="p-1 px-2 text-slate-500 hover:text-white hover:bg-slate-800 rounded-lg transition duration-150 cursor-pointer text-xs font-bold"
+                  className="p-1 px-2 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition duration-150 cursor-pointer text-xs font-bold"
                   title="Close Image Modal"
                 >
                   <X className="h-5 w-5" />
@@ -527,32 +527,32 @@ export default function PhotoGallery({
               {/* Bio and metadata descriptions */}
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <span className="text-[10px] font-black uppercase text-indigo-400 tracking-widest block font-sans">
+                  <span className="text-[10px] font-black uppercase text-[#D62828] tracking-widest block font-sans">
                     Snapshot Information
                   </span>
-                  <p className="text-xs text-slate-300 leading-relaxed font-semibold bg-slate-950 border border-slate-800 rounded-xl p-3.5">
+                  <p className="text-xs text-slate-600 leading-relaxed font-semibold bg-slate-50 border border-slate-200 rounded-xl p-3.5">
                     {selectedPhoto.description}
                   </p>
                 </div>
 
                 {/* Additional parameters like club */}
                 {selectedPhoto.club && (
-                  <div className="pt-1 text-slate-400 text-xs">
-                    <div className="bg-slate-950 p-2.5 rounded-xl border border-slate-800">
-                      <span className="text-[9px] uppercase font-bold text-slate-500 block tracking-wider">Organizing & Verifying Body</span>
-                      <span className="font-extrabold text-slate-200">{selectedPhoto.club}</span>
+                  <div className="pt-1 text-slate-500 text-xs">
+                    <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                      <span className="text-[9px] uppercase font-bold text-slate-400 block tracking-wider">Organizing & Verifying Body</span>
+                      <span className="font-extrabold text-[#1F2937]">{selectedPhoto.club}</span>
                     </div>
                   </div>
                 )}
               </div>
 
               {/* Instructions on close */}
-              <div className="pt-4 border-t border-slate-800 flex items-center justify-between text-[10px] text-slate-500 font-bold">
+              <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-500 font-bold">
                 <span>Verified by Athletics Council</span>
                 <button
                   type="button"
                   onClick={() => setSelectedPhoto(null)}
-                  className="text-indigo-400 hover:underline"
+                  className="text-[#2563EB] hover:underline"
                 >
                   Return to Grid
                 </button>
@@ -566,34 +566,34 @@ export default function PhotoGallery({
       {/* ADD/EDIT FORM MODAL */}
       {isFormModalOpen && (
         <div 
-          className="fixed inset-0 z-[1000] bg-slate-900/80 backdrop-blur-md flex items-start sm:items-center justify-center p-4 pt-24 sm:p-6 overflow-y-auto"
+          className="fixed inset-0 z-[1000] bg-slate-900/60 backdrop-blur-md flex items-start sm:items-center justify-center p-4 pt-24 sm:p-6 overflow-y-auto"
           id="gallery-admin-form-modal"
         >
           <div 
-            className="bg-white rounded-3xl overflow-hidden max-w-2xl w-full border border-slate-250 shadow-2xl relative flex flex-col antialiased animate-scale-up"
+            className="bg-white rounded-3xl overflow-hidden max-w-2xl w-full border border-slate-200 shadow-2xl relative flex flex-col antialiased animate-scale-up"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="border-b border-slate-800 px-6 py-4 flex items-center justify-between bg-slate-950">
+            <div className="border-b border-slate-200 px-6 py-4 flex items-center justify-between bg-slate-50">
               <div>
-                <span className="text-[10px] font-black tracking-wider uppercase text-indigo-400 font-mono block">
+                <span className="text-[10px] font-black tracking-wider uppercase text-[#D62828] font-mono block">
                   {editingMetric ? 'UPDATE SNAPSHOT RECORD' : 'CREATE LIVE ATHLETICS SNAPSHOT'}
                 </span>
-                <h3 className="text-lg font-black text-white leading-tight">
+                <h3 className="text-lg font-black text-[#1F2937] leading-tight">
                   {editingMetric ? 'Edit Gallery Photo Details' : 'Add Tournament Moment'}
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setIsFormModalOpen(false)}
-                className="p-1 px-2 text-slate-400 hover:text-slate-800 hover:bg-slate-200 rounded-lg transition duration-150 text-xs font-bold"
+                className="p-1 px-2 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition duration-150 text-xs font-bold"
                 title="Close Form Modal"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
-                   <form onSubmit={handleSaveMetric} className="p-6 md:p-8 space-y-5 overflow-y-auto max-h-[80vh] text-left bg-slate-900">
+                   <form onSubmit={handleSaveMetric} className="p-6 md:p-8 space-y-5 overflow-y-auto max-h-[80vh] text-left bg-white">
               {/* Tournament selector side */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1">
@@ -612,7 +612,7 @@ export default function PhotoGallery({
                         setFormTournament('');
                       }
                     }}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs font-bold text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-[#D62828]/20"
                   >
                     {competitions.map(c => (
                       <option key={c.id} value={c.id}>{c.title}</option>
@@ -634,7 +634,7 @@ export default function PhotoGallery({
                       placeholder="e.g. Pratap Meet 2024"
                       value={formTournament}
                       onChange={(e) => setFormTournament(e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs font-bold text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-[#D62828]/20"
                     />
                   </div>
                 )}
@@ -647,7 +647,7 @@ export default function PhotoGallery({
                   <select
                     value={formEventType}
                     onChange={(e) => setFormEventType(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs font-bold text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-[#D62828]/20"
                   >
                     <option value="None">-- Select Discipline (Optional) --</option>
                     <option value="100 m">100 m Sprint</option>
@@ -678,7 +678,7 @@ export default function PhotoGallery({
                     placeholder="e.g. 11.23 or 6.45"
                     value={formValue}
                     onChange={(e) => setFormValue(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs font-bold text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-[#D62828]/20"
                   />
                 </div>
 
@@ -687,7 +687,7 @@ export default function PhotoGallery({
                   <select
                     value={formUnit}
                     onChange={(e) => setFormUnit(e.target.value as 's' | 'm' | 'none')}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs font-bold text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-[#D62828]/20"
                   >
                     <option value="none">-- Select Unit --</option>
                     <option value="s">Seconds (s) - Running</option>
@@ -705,7 +705,7 @@ export default function PhotoGallery({
                     required
                     value={formYear}
                     onChange={(e) => setFormYear(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs font-bold text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-[#D62828]/20"
                   />
                 </div>
 
@@ -716,7 +716,7 @@ export default function PhotoGallery({
                     required
                     value={formTournament}
                     onChange={(e) => setFormTournament(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs font-bold text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-[#D62828]/20"
                   />
                 </div>
 
@@ -728,13 +728,13 @@ export default function PhotoGallery({
                     placeholder="e.g. IISER K Stadium"
                     value={formVenue}
                     onChange={(e) => setFormVenue(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs font-bold text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-[#D62828]/20"
                   />
                 </div>
               </div>
 
               {/* Trial Action Photograph Source selector (Local Upload + Presets + Links) */}
-              <div className="space-y-3.5 border-t border-b border-slate-800 py-4">
+              <div className="space-y-3.5 border-t border-b border-slate-200 py-4">
                 <label className="text-[10px] uppercase font-black tracking-wider text-slate-500 block">Trial Action Photograph Source</label>
                 
                 {/* Drag & Drop Local Upload Area */}
@@ -750,8 +750,8 @@ export default function PhotoGallery({
                   onClick={() => document.getElementById('local-gallery-file-input')?.click()}
                   className={`border-2 border-dashed rounded-2xl p-5 text-center transition cursor-pointer flex flex-col items-center justify-center space-y-2 group ${
                     isDragging 
-                      ? 'border-indigo-600 bg-indigo-950/50 scale-[0.98]' 
-                      : 'border-slate-800 bg-slate-950 hover:bg-slate-850 hover:border-slate-700'
+                      ? 'border-[#D62828] bg-red-50 scale-[0.98]' 
+                      : 'border-slate-200 bg-slate-50 hover:bg-slate-100 hover:border-slate-300'
                   }`}
                 >
                   <input 
@@ -764,11 +764,11 @@ export default function PhotoGallery({
                       if (file) processFile(file);
                     }}
                   />
-                  <div className="h-9 w-9 rounded-full bg-slate-800 text-slate-300 flex items-center justify-center group-hover:bg-indigo-950 group-hover:text-indigo-400 transition">
+                  <div className="h-9 w-9 rounded-full bg-red-50 text-[#D62828] flex items-center justify-center group-hover:bg-[#D62828] group-hover:text-white transition">
                     <Upload className="h-4.5 w-4.5" />
                   </div>
                   <div>
-                    <span className="text-xs font-black text-slate-200 block">Click to upload from local machine</span>
+                    <span className="text-xs font-black text-[#1F2937] block">Click to upload from local machine</span>
                     <span className="text-[10px] text-slate-500 block mt-0.5">or drag and drop your image file here (PNG, JPG, JPEG up to 5MB)</span>
                   </div>
                 </div>
@@ -782,13 +782,13 @@ export default function PhotoGallery({
                       placeholder="Paste static image web URL..."
                       value={formPhotoUrl}
                       onChange={(e) => setFormPhotoUrl(e.target.value)}
-                      className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs font-semibold text-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 truncate"
+                      className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-semibold text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-[#D62828]/20 truncate"
                     />
                     {formPhotoUrl && (
                       <button 
                         type="button"
                         onClick={() => setFormPhotoUrl('')}
-                        className="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-black px-3 py-2 rounded-xl border border-slate-700 transition cursor-pointer"
+                        className="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-black px-3 py-2 rounded-xl border border-slate-300 transition cursor-pointer"
                       >
                         Reset
                       </button>
@@ -798,14 +798,14 @@ export default function PhotoGallery({
 
                 {/* Live Realtime Thumbnail Preview bubble */}
                 {formPhotoUrl && (
-                  <div className="mt-2 border border-slate-800 rounded-2xl overflow-hidden bg-slate-950 relative aspect-video max-h-36 mx-auto shadow-sm">
+                  <div className="mt-2 border border-slate-200 rounded-2xl overflow-hidden bg-slate-100 relative aspect-video max-h-36 mx-auto shadow-sm">
                     <img 
                       src={formPhotoUrl} 
                       alt="Local Upload Preview" 
                       className="w-full h-full object-cover" 
                       referrerPolicy="no-referrer"
                     />
-                    <div className="absolute top-2 right-2 bg-slate-900/80 backdrop-blur text-white text-[9px] font-black tracking-wider uppercase px-2 py-0.5 rounded cursor-default">
+                    <div className="absolute top-2 right-2 bg-[#1F2937]/80 backdrop-blur text-white text-[9px] font-black tracking-wider uppercase px-2 py-0.5 rounded cursor-default">
                       Active Image Preview
                     </div>
                   </div>
@@ -815,17 +815,17 @@ export default function PhotoGallery({
               </div>
 
               {/* Form Actions Footer block */}
-              <div className="border-t border-slate-800 pt-5 flex items-center justify-end gap-3">
+              <div className="border-t border-slate-200 pt-5 flex items-center justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setIsFormModalOpen(false)}
-                  className="bg-slate-850 hover:bg-slate-800 text-slate-300 text-xs font-bold px-4 py-2.5 rounded-xl transition duration-150 cursor-pointer"
+                  className="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-4 py-2.5 rounded-xl transition duration-150 cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-black px-5 py-2.5 rounded-xl transition duration-155 shadow-md shadow-indigo-900/40 cursor-pointer"
+                  className="bg-[#D62828] hover:bg-red-700 text-white text-xs font-black px-5 py-2.5 rounded-xl transition duration-155 shadow-md shadow-red-500/20 cursor-pointer"
                 >
                   {editingMetric ? 'Save Changes' : 'Publish Snapshot'}
                 </button>
