@@ -264,16 +264,16 @@ export default function PhotoGallery({
   };
 
   return (
-    <div className="space-y-8 animate-fade-in text-slate-100" id="photo-gallery-root">
+    <div className="space-y-8 animate-fade-in text-[#1F2937]" id="photo-gallery-root">
       
       {/* Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-800 pb-5" id="gallery-header-section">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 pb-5" id="gallery-header-section">
         <div>
-          <h2 className="text-3xl font-black text-white tracking-tight flex items-center gap-2">
-            <Activity className="h-7 w-7 text-indigo-500 animate-pulse" />
+          <h2 className="text-3xl font-black text-[#1F2937] tracking-tight flex items-center gap-2">
+            <Activity className="h-7 w-7 text-[#D62828] animate-pulse" />
             Pratap Meet Gallery
           </h2>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-slate-600 mt-1">
             Explore authentic high-resolution snapshots of Pratap Meet moments, action shots, and college meets.
           </p>
         </div>
@@ -292,7 +292,7 @@ export default function PhotoGallery({
           {isSimulatedAdmin && (
             <button
               onClick={handleOpenAddModal}
-              className="bg-indigo-650 hover:bg-indigo-700 text-white text-xs font-black px-4 py-2 rounded-xl transition duration-150 flex items-center gap-1.5 shadow-md shadow-indigo-100 cursor-pointer"
+              className="bg-[#D62828] hover:bg-red-700 text-white text-xs font-black px-4 py-2 rounded-xl transition duration-150 flex items-center gap-1.5 shadow-md shadow-red-500/20 cursor-pointer"
             >
               <Plus className="h-4 w-4" />
               Add Snapshot
