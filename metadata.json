@@ -1,0 +1,6 @@
+{
+  "name": "Pratap IISER KOLKATA",
+  "description": "Performance tracking and management platform for Pratap IISER KOLKATA Athletics. Track metrics, manage competitions, and view athlete records.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
